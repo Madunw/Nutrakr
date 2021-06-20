@@ -38,7 +38,7 @@
     </div>
     <!-- 右半部 -->
     <div class="Calculator-right">
-
+        <ve-ring :data="chartData" :extend="extend"></ve-ring>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
   name: 'Calculator',
   data () {
     return {
+      
         list: [
           {
             num: 1,
@@ -56,10 +57,10 @@ export default {
             Protein: 2,
             Fat: 3,
             Calorie: 6,
-            ServingSize: "g",
-            
+            ServingSize: "g"
           }
           ],
+        // sumFat : list.reduce((sum, e) => sum + Fat(e.number || 0), 0),
         foods: [
           {
             name: "りんご",
@@ -117,7 +118,25 @@ export default {
             num: 1
           }
         ],
+        // 图表数据
+        chartData: {
+          columns: ['Nutrition', 'gram'],
+          rows: [
+            { 'Nutrition': 'Carbohydrate', 'gram': 1, },
+            { 'Nutrition': 'Protein', 'gram': 1, },
+            { 'Nutrition': 'Fat', 'gram': 4, },
+          ]
+        }
     }
+  },
+  computed:{
+        sumFat:function(){
+            sumFat = 0;
+          this.list.forEach(function (item){
+            sumFat+=item.Fat;
+          })
+          return sumFat;
+        },
   },
     methods: {
       handleChange(value) {
@@ -159,6 +178,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 .Calculator {
   margin-top: 10%;
@@ -170,12 +190,12 @@ export default {
   float: left;
   background-color: aqua;
   height: 100%;
-  width: 50%;
+  width: 60%;
 }
 .Calculator-right {
   float: right;
   background-color: pink;
   height: 100%;
-  width: 50%;
+  width: 40%;
 }
 </style>
