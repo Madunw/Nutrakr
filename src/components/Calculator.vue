@@ -9,7 +9,7 @@
             {{item.name}}
           </el-option>
         </el-select>
-      
+     
   
   
        <!-- 表格 -->   
@@ -38,7 +38,7 @@
     </div>
     <!-- 右半部 -->
     <div class="Calculator-right">
-        <ve-ring :data="chartData" :extend="extend"></ve-ring>
+        <ve-ring :data="sumNutrition" :extend="extend"></ve-ring>
     </div>
   </div>
 </template>
@@ -119,34 +119,38 @@ export default {
           }
         ],
         // 图表数据
-        chartData: {
+        sumNutrition: {
           columns: ['Nutrition', 'gram'],
           rows: [
-            { 'Nutrition': 'Carbohydrate', 'gram': 1, },
-            { 'Nutrition': 'Protein', 'gram': 1, },
-            { 'Nutrition': 'Fat', 'gram': 4, },
+            { 'Nutrition': 'Carbohydrate', gram: 0, },
+            { 'Nutrition': 'Protein', gram: 0, },
+            { 'Nutrition': 'Fat', gram: 0, },
           ]
         }
     }
   },
-  computed:{
-        sumFat:function(){
-            sumFat = 0;
-          this.list.forEach(function (item){
-            sumFat+=item.Fat;
-          })
-          return sumFat;
-        },
-  },
+  // computed:{
+  //       sumFat:function(){
+  //           sumFat = 0;
+  //         this.list.forEach(function (item){
+  //           sumFat+=item.Fat;
+  //         })
+  //         return sumFat;
+  //       },
+  // },
     methods: {
-      handleChange(value) {
-        console.log(value);
-      },
+      // handleChange(value) {
+      //   console.log(value);
+      // },
       // 加号按钮 -> 加入表格中
       add: function (name, Carbohydrate, Protein, Fat, Calorie, ServingSize, num) {
           this.list.push({
             name , Calorie, Carbohydrate, Protein, Fat, ServingSize, num
           });
+          this.sumNutrition.rows[0].gram += Carbohydrate;      //将新的Carbohydrate加入sumNutrition
+          this.sumNutrition.rows[1].gram += Protein;     //将新的Protein加入sumNutrition
+          this.sumNutrition.rows[2].gram += Fat;     //将新的Fat加入sumNutrition
+          myChart.setOption(option,true);     //刷新图表
         },
 
       // 计算合计值
