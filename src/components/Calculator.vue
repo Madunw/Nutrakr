@@ -13,11 +13,10 @@
   
   
        <!-- 表格 -->   
-      <el-table   :data="list"   stripe   show-summary   style="width: 100%" >   
+      <el-table   :data="list"   stripe   style="width: 100%" >   
           <el-table-column     prop="name"     label="食物名"     width="180">   
           </el-table-column>   
-  
-          <el-table-column     prop="Carbohydrate"     label="糖分">   
+          <el-table-column     prop="Carbohydrate"     label="糖分"> 
           </el-table-column>   
   
           <el-table-column     prop="Protein"     label="蛋白质">   
@@ -31,154 +30,60 @@
   
           <el-table-column  prop="num" label="数量" > 
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" @change="handleChange" :min="0" :max="100" label="数量"></el-input-number>
+              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="100" label="数量" size="small"></el-input-number>
           </template>
           </el-table-column>
       </el-table>
+     
     </div>
     <!-- 右半部 -->
     <div class="Calculator-right">
-        <ve-ring :data="sumNutrition" :extend="extend"></ve-ring>
+        <ve-ring :data="totalValue" :extend="extend"></ve-ring>
     </div>
   </div>
 </template>
-
+add
 <script>
+import foods from "../../static/foods.json";
 export default {
   name: 'Calculator',
   data () {
     return {
-      
+        //营养值数据库form food.json
+        foods: foods,
+        //已选的数据（在表格中展示）
         list: [
-          {
-            num: 1,
-            name: "banana",
-            Carbohydrate:  168,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g"
-          }
+          
           ],
-        // sumFat : list.reduce((sum, e) => sum + Fat(e.number || 0), 0),
-        foods: [
-          {
-            name: "りんご",
-            Carbohydrate: 16,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "banana",
-            Carbohydrate: 162,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "orange",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-
-            name: "melon",
-            Carbohydrate: 12,
-            Protein: 0,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "rice",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 5,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "milk",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          }
-        ],
-        // 图表数据
-        sumNutrition: {
+        // 合计数据
+        totalValue: {
           columns: ['Nutrition', 'gram'],
           rows: [
             { 'Nutrition': 'Carbohydrate', gram: 0, },
             { 'Nutrition': 'Protein', gram: 0, },
-            { 'Nutrition': 'Fat', gram: 0, },
+            { 'Nutrition': 'Fat', gram: 0 , },
           ]
         }
     }
   },
-  // computed:{
-  //       sumFat:function(){
-  //           sumFat = 0;
-  //         this.list.forEach(function (item){
-  //           sumFat+=item.Fat;
-  //         })
-  //         return sumFat;
-  //       },
-  // },
-    methods: {
-      // handleChange(value) {
-      //   console.log(value);
-      // },
-      // 加号按钮 -> 加入表格中
-      add: function (name, Carbohydrate, Protein, Fat, Calorie, ServingSize, num) {
-          this.list.push({
-            name , Calorie, Carbohydrate, Protein, Fat, ServingSize, num
-          });
-          this.sumNutrition.rows[0].gram += Carbohydrate;      //将新的Carbohydrate加入sumNutrition
-          this.sumNutrition.rows[1].gram += Protein;     //将新的Protein加入sumNutrition
-          this.sumNutrition.rows[2].gram += Fat;     //将新的Fat加入sumNutrition
-          myChart.setOption(option,true);     //刷新图表
+  computed: {
+        //将合计值传给totalValue
+        sumValue() {
+            var sumCar = this.list.map(row => row.Carbohydrate * row.num).reduce((acc, cur) => (parseInt(cur) + acc), 0);//计算list中每个Carbohydrate与num乘积的合计值
+            var sumPro = this.list.map(row => row.Protein * row.num).reduce((acc, cur) => (parseInt(cur) + acc), 0);//计算list中每个Protein与num乘积的合计值
+            var sumFat = this.list.map(row => row.Fat * row.num).reduce((acc, cur) => (parseInt(cur) + acc), 0);//计算list中每个Fat与num乘积合计值
+            this.totalValue.rows[0].gram = sumCar;
+            this.totalValue.rows[1].gram = sumPro;
+            this.totalValue.rows[2].gram = sumFat;
         },
-
-      // 计算合计值
-      getSummaries(param) {
-        const { columns, data } = param;
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = 'total';
-            return;
-          }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] += ' g';
-          } else {
-            sums[index] = 'N/A';
-          }
-        });
-        return sums;
-      },
+  },
+  methods: {
+      // 加号按钮 -> 加入list(表格)中
+      add: function (name, Carbohydrate, Protein, Fat, Calorie) {
+          this.list.push({
+            name , Calorie, Carbohydrate, Protein, Fat, ServingSize:"1", num:"1"
+          });
+        },
     }
 }
 </script>
