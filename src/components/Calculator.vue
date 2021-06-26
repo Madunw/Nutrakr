@@ -16,10 +16,6 @@
       <el-table   :data="list"   stripe   style="width: 100%" >   
           <el-table-column     prop="name"     label="食物名"     width="180">   
           </el-table-column>   
-<<<<<<< HEAD
-=======
-  
->>>>>>> 6c86010520aec0c519b8264e3bbd426dbddba3f9
           <el-table-column     prop="Carbohydrate"     label="糖分"> 
           </el-table-column>   
   
@@ -34,11 +30,7 @@
   
           <el-table-column  prop="num" label="数量" > 
             <template slot-scope="scope">
-<<<<<<< HEAD
               <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="100" label="数量" size="small"></el-input-number>
-=======
-              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="100" label="数量"></el-input-number>
->>>>>>> 6c86010520aec0c519b8264e3bbd426dbddba3f9
           </template>
           </el-table-column>
       </el-table>
@@ -57,85 +49,11 @@ export default {
   name: 'Calculator',
   data () {
     return {
-<<<<<<< HEAD
         //营养值数据库form food.json
         foods: foods,
         //已选的数据（在表格中展示）
         list: [
-          
           ],
-=======
-        //已选的数据（在表格中展示）
-        list: [
-          {
-            name: "banana",
-            Carbohydrate:  168,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g",
-            num: 1,
-          }
-          ],
-        // 数据集
-        foods: [
-          {
-            name: "りんご",
-            Carbohydrate: 16,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "banana",
-            Carbohydrate: 162,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "orange",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 6,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-
-            name: "melon",
-            Carbohydrate: 12,
-            Protein: 0,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "rice",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 5,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          },
-          {
-            name: "milk",
-            Carbohydrate: 12,
-            Protein: 2,
-            Fat: 3,
-            Calorie: 56,
-            ServingSize: "g",
-            num: 1
-          }
-        ],
->>>>>>> 6c86010520aec0c519b8264e3bbd426dbddba3f9
         // 合计数据
         totalValue: {
           columns: ['Nutrition', 'gram'],
@@ -160,13 +78,9 @@ export default {
   },
   methods: {
       // 加号按钮 -> 加入list(表格)中
-<<<<<<< HEAD
       add: function (name, Carbohydrate, Protein, Fat, Calorie) {
-=======
-      add: function (name, Carbohydrate, Protein, Fat, Calorie, ServingSize, num) {
->>>>>>> 6c86010520aec0c519b8264e3bbd426dbddba3f9
           this.list.push({
-            name , Calorie, Carbohydrate, Protein, Fat, ServingSize:"1", num:"1"
+            name , Calorie, Carbohydrate, Protein, Fat, ServingSize:"100g", num:"1"
           });
         },
     }
