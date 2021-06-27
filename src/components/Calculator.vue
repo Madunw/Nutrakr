@@ -15,62 +15,70 @@
   
         {{sumCarb}}
        <!-- 表格 -->   
-      <el-table   :data="list"   stripe   v-loading="loading" style="width: 100%" > 
+      <el-table   :data="list"   stripe   v-loading="loading" style="width: 100%"> 
           
-
-          <el-table-column     prop="name"     label="食品名"    >   
-          </el-table-column> 
-
-          <el-table-column     prop="ENERC_KCAL"     label="熱量(kcal)">  
-          </el-table-column> 
-
-          <el-table-column     prop="CHOCDF"     label="炭水化物(g)"> 
-          </el-table-column>   
-  
-          <el-table-column     prop="PROT"     label="たんぱく質(g)">   
-          </el-table-column>   
-  
-          <el-table-column     prop="FAT"     label="脂質(g)">   
-          </el-table-column>  
-
-          <el-table-column     prop="NACL_EQ"     label="食塩(g)">  
-          </el-table-column> 
-
-          <el-table-column          label="test"> 
-            <template slot-scope="scope"> 
-              <el-popover  placement="bottom"   width="600"  trigger="click">
-                糖質:{{list[scope.$index].CHOAVL}}g  食物繊維:{{list[scope.$index].FIB}}g  
-                ナトリウム:{{list[scope.$index].NA}}mg  カリウム:{{list[scope.$index].K}}mg  カルシウム:{{list[scope.$index].CA}}mg  マグネシウム:{{list[scope.$index].MG}}mg  
-                リン:{{list[scope.$index].P}}mg　鉄:{{list[scope.$index].FE}}mg 亜鉛:{{list[scope.$index].ZN}}mg　銅:{{list[scope.$index].CU}}mg  マンガン:{{list[scope.$index].MN}}mg　
-                ヨウ素:{{list[scope.$index].ID}}μg  セレン:{{list[scope.$index].SE}}μg  クロム:{{list[scope.$index].CR}}μg  モリブデン:{{list[scope.$index].MO}}μg  
-                ビタミンA:{{list[scope.$index].CARTBEQ}}μg  ビタミンC:{{list[scope.$index].VITC}}μg  ビタミンD:{{list[scope.$index].VITD}}μg 
-                ビタミンE:{{list[scope.$index].VITE}}μg  ビタミンK:{{list[scope.$index].VITK}}μg　
-                ビタミンＢ1:{{list[scope.$index].THIA}}mg  ビタミンＢ2:{{list[scope.$index].RIBF}}mg  ナイアシン:{{list[scope.$index].NIA}}mg  
-                ビタミンＢ6:{{list[scope.$index].VITB6A}}mg  ビタミンＢ12:{{list[scope.$index].VITB12}}μg  葉酸:{{list[scope.$index].FOL}}μg  
-                パントテン酸:{{list[scope.$index].PANTAC}}mg  ビオチン:{{list[scope.$index].BIOT}}μg
-
-
-                <el-button slot="reference">more</el-button>
-              </el-popover>
-            </template>
-          </el-table-column>
-
-          <el-table-column     prop="Size"     label="" class="test" width="65">  
-          </el-table-column>  
-  
-          <el-table-column  prop="num" label="Size" width="140"> 
-            <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="99" label="数量" size="mini"></el-input-number>
-            </template>
-          </el-table-column>
-
           <!-- 移除按钮 -->
-          <el-table-column  align="right" label=" " width="80">
+          <el-table-column  align="right" label=" " width="45">
             <template slot-scope="scope">
               <!-- 从list中移除 -->
               <el-button  size="small" circle icon="el-icon-delete" @click="handleDelete(scope.$index)"></el-button>
             </template>
           </el-table-column>
+
+          <el-table-column     prop="name"     label="食品名"    width="200">   
+          </el-table-column> 
+
+          <el-table-column     prop="ENERC_KCAL"     label="熱量(kcal)" align="center">  
+          </el-table-column> 
+
+          <el-table-column     prop="CHOCDF"     label="炭水化物(g)" align="center"> 
+          </el-table-column>   
+  
+          <el-table-column     prop="PROT"     label="たんぱく質(g)" align="center">   
+          </el-table-column>   
+  
+          <el-table-column     prop="FAT"     label="脂質(g)" align="center">   
+          </el-table-column>  
+
+          <el-table-column     prop="NACL_EQ"     label="食塩(g)" align="center">  
+          </el-table-column> 
+
+          <el-table-column width="150"> 
+            <template slot-scope="scope"> 
+              <el-popover  placement="bottom"  visible-arrow="true" width="50px" trigger="click">
+                <table style="font-size: 4px">
+                  <tr>
+                    <td>・糖質: {{list[scope.$index].CHOAVL}}g</td><td>・食物繊維: {{list[scope.$index].FIB}}g</td><td>・ナトリウム: {{list[scope.$index].NA}}mg</td><td>・カリウム: {{list[scope.$index].K}}mg</td>
+                    <td>・カルシウム: {{list[scope.$index].CA}}mg</td><td>・マグネシウム: {{list[scope.$index].MG}}mg</td><td>・リン: {{list[scope.$index].P}}mg</td>
+                  </tr>
+                  <tr>
+                    <td>・鉄: {{list[scope.$index].FE}}mg</td><td>・亜鉛: {{list[scope.$index].ZN}}mg</td><td>・銅: {{list[scope.$index].CU}}mg</td><td>・マンガン: {{list[scope.$index].MN}}mg</td>
+                    <td>・ヨウ素: {{list[scope.$index].ID}}μg </td><td>・セレン: {{list[scope.$index].SE}}μg</td><td>・クロム: {{list[scope.$index].CR}}μg</td>
+                  </tr>
+                  <tr>
+                    <td>・モリブデン: {{list[scope.$index].MO}}μg</td><td>・ビタミンA: {{list[scope.$index].CARTBEQ}}μg</td><td>・ビタミンC: {{list[scope.$index].VITC}}μg</td><td>・ビタミンD: {{list[scope.$index].VITD}}μg</td>
+                    <td>・ビタミンE: {{list[scope.$index].VITE}}μg</td><td>・ビタミンK: {{list[scope.$index].VITK}}μg</td><td>・ビタミンB<sub>1</sub>: {{list[scope.$index].THIA}}mg</td>
+                  </tr>
+                  <tr>
+                    <td>・ビタミンB<sub>2</sub>: {{list[scope.$index].RIBF}}mg</td><td>・ナイアシン: {{list[scope.$index].NIA}}mg</td><td>・ビタミンB<sub>6</sub> {{list[scope.$index].VITB6A}}mg</td><td>・ビタミンB<sub>12</sub>: {{list[scope.$index].VITB12}}μg</td> 
+                    <td>・ 葉酸: {{list[scope.$index].FOL}}μg</td><td>・パントテン酸: {{list[scope.$index].PANTAC}}mg</td><td>・ビオチン: {{list[scope.$index].BIOT}}μg</td>
+                  </tr>
+                </table>
+              <el-button slot="reference">⊽</el-button>
+              </el-popover>
+            </template>
+          </el-table-column>
+
+          <el-table-column     prop="Size"     label="" class="test" width="62">  
+          </el-table-column>  
+  
+          <el-table-column  prop="num" width="143"> 
+            <template slot-scope="scope">
+              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="99" label="数量" size="mini"></el-input-number>
+            </template>
+          </el-table-column>
+
+          
         
         </el-table>
      
@@ -152,5 +160,7 @@ export default {
   height: 100%;
   width: 40%;
 }
-
+table td{
+  border-left:5px
+}
 </style>
