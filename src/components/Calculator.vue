@@ -48,20 +48,20 @@
               <el-popover  placement="bottom"  visible-arrow="true" width="50px" trigger="click">
                 <table style="font-size: 4px">
                   <tr>
-                    <td>・糖質: {{list[scope.$index].CHOAVL}}g</td><td>・食物繊維: {{list[scope.$index].FIB}}g</td><td>・ナトリウム: {{list[scope.$index].NA}}mg</td><td>・カリウム: {{list[scope.$index].K}}mg</td>
-                    <td>・カルシウム: {{list[scope.$index].CA}}mg</td><td>・マグネシウム: {{list[scope.$index].MG}}mg</td><td>・リン: {{list[scope.$index].P}}mg</td>
+                    <td>・糖質:&nbsp;&nbsp;{{list[scope.$index].CHOAVL}}g</td><td>・食物繊維:&nbsp;&nbsp;{{list[scope.$index].FIB}}g</td><td>・ナトリウム:&nbsp;&nbsp;{{list[scope.$index].NA}}mg</td><td>・カリウム:&nbsp;&nbsp;{{list[scope.$index].K}}mg</td>
+                    <td>・カルシウム:&nbsp;&nbsp;{{list[scope.$index].CA}}mg</td><td>・マグネシウム:&nbsp;&nbsp;{{list[scope.$index].MG}}mg</td><td>・リン:&nbsp;&nbsp;{{list[scope.$index].P}}mg</td>
                   </tr>
                   <tr>
-                    <td>・鉄: {{list[scope.$index].FE}}mg</td><td>・亜鉛: {{list[scope.$index].ZN}}mg</td><td>・銅: {{list[scope.$index].CU}}mg</td><td>・マンガン: {{list[scope.$index].MN}}mg</td>
-                    <td>・ヨウ素: {{list[scope.$index].ID}}μg </td><td>・セレン: {{list[scope.$index].SE}}μg</td><td>・クロム: {{list[scope.$index].CR}}μg</td>
+                    <td>・鉄:&nbsp;&nbsp;{{list[scope.$index].FE}}mg</td><td>・亜鉛:&nbsp;&nbsp;{{list[scope.$index].ZN}}mg</td><td>・銅:&nbsp;&nbsp;{{list[scope.$index].CU}}mg</td><td>・マンガン:&nbsp;&nbsp;{{list[scope.$index].MN}}mg</td>
+                    <td>・ヨウ素:&nbsp;&nbsp;{{list[scope.$index].ID}}μg </td><td>・セレン:&nbsp;&nbsp;{{list[scope.$index].SE}}μg</td><td>・クロム:&nbsp;&nbsp;{{list[scope.$index].CR}}μg</td>
                   </tr>
                   <tr>
-                    <td>・モリブデン: {{list[scope.$index].MO}}μg</td><td>・ビタミンA: {{list[scope.$index].CARTBEQ}}μg</td><td>・ビタミンC: {{list[scope.$index].VITC}}μg</td><td>・ビタミンD: {{list[scope.$index].VITD}}μg</td>
-                    <td>・ビタミンE: {{list[scope.$index].VITE}}μg</td><td>・ビタミンK: {{list[scope.$index].VITK}}μg</td><td>・ビタミンB<sub>1</sub>: {{list[scope.$index].THIA}}mg</td>
+                    <td>・モリブデン:&nbsp;&nbsp;{{list[scope.$index].MO}}μg</td><td>・ビタミンA:&nbsp;&nbsp;{{list[scope.$index].CARTBEQ}}μg</td><td>・ビタミンC: &nbsp;&nbsp;{{list[scope.$index].VITC}}μg</td><td>・ビタミンD:&nbsp;&nbsp;{{list[scope.$index].VITD}}μg</td>
+                    <td>・ビタミンE:&nbsp;&nbsp;{{list[scope.$index].VITE}}μg</td><td>・ビタミンK:&nbsp;&nbsp;{{list[scope.$index].VITK}}μg</td><td>・ビタミンB<sub>1</sub>:&nbsp;&nbsp;{{list[scope.$index].THIA}}mg</td>
                   </tr>
                   <tr>
-                    <td>・ビタミンB<sub>2</sub>: {{list[scope.$index].RIBF}}mg</td><td>・ナイアシン: {{list[scope.$index].NIA}}mg</td><td>・ビタミンB<sub>6</sub> {{list[scope.$index].VITB6A}}mg</td><td>・ビタミンB<sub>12</sub>: {{list[scope.$index].VITB12}}μg</td> 
-                    <td>・ 葉酸: {{list[scope.$index].FOL}}μg</td><td>・パントテン酸: {{list[scope.$index].PANTAC}}mg</td><td>・ビオチン: {{list[scope.$index].BIOT}}μg</td>
+                    <td>・ビタミンB<sub>2</sub>:&nbsp;&nbsp;{{list[scope.$index].RIBF}}mg</td><td>・ナイアシン:&nbsp;&nbsp;{{list[scope.$index].NIA}}mg</td><td>・ビタミンB<sub>6</sub>:&nbsp;&nbsp;{{list[scope.$index].VITB6A}}mg</td><td>・ビタミンB<sub>12</sub>:&nbsp;&nbsp;{{list[scope.$index].VITB12}}μg</td> 
+                    <td>・ 葉酸:&nbsp;&nbsp;{{list[scope.$index].FOL}}μg</td><td>・パントテン酸:&nbsp;&nbsp;{{list[scope.$index].PANTAC}}mg</td><td>・ビオチン:&nbsp;&nbsp;{{list[scope.$index].BIOT}}μg</td>
                   </tr>
                 </table>
               <el-button slot="reference">⊽</el-button>
@@ -69,28 +69,30 @@
             </template>
           </el-table-column>
 
-          <el-table-column     prop="Size"     label="" class="test" width="62">  
-          </el-table-column>  
-  
-          <el-table-column  prop="num" width="143"> 
+          <el-table-column  prop="num" label="グラム" width="143" > 
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0" :max="99" label="数量" size="mini"></el-input-number>
+              <el-input-number v-model="scope.row.num" @change="sumValue" :min="0"  :max="9999" label="数量" size="mini" :step="50"></el-input-number>
             </template>
           </el-table-column>
 
           
         
         </el-table>
-     
     </div>
+
+
     <!-- 右半部 -->
-    <div>
-      
-    </div>
     <div class="Calculator-right">
-        <ve-ring :data="totalValue" :extend="extend"></ve-ring>
+        
     </div>
+
+    <!-- 底部 -->
+    <div class="Calculator-bottom">
+        <ve-ring :data="totalValue" :extend="extend" height="240px" :settings="{radius: [30, 50], offsetY: 100}"></ve-ring>
+    </div>
+
   </div>
+  
 </template>
 <script>
 import foods from "../../static/foods2.json";
@@ -130,7 +132,8 @@ export default {
       // 加号按钮 -> 加入list(表格)中
       add: function (name,CHOCDF,PROT,FAT,ENERC_KCAL,NACL_EQ,CHOAVL,FIB,NA,K,CA,MG,P,FE,ZN,CU,MN,ID,SE,CR,MO,CARTBEQ,VITD,VITK,THIA, RIBF,NIA,VITB6A,VITB12,FOL, PANTAC, BIOT,VITC, VITE, Size, num) {
           this.list.push({
-            name,CHOCDF,PROT,FAT,ENERC_KCAL,NACL_EQ,CHOAVL,FIB,NA,K,CA,MG,P,FE,ZN,CU,MN,ID,SE,CR,MO,CARTBEQ,VITD,VITK,THIA, RIBF,NIA,VITB6A,VITB12,FOL, PANTAC, BIOT,VITC, VITE, Size:"100g  *", num:"1"
+            name,CHOCDF,PROT,FAT,ENERC_KCAL,NACL_EQ,CHOAVL,FIB,NA,K,CA,MG,P,FE,ZN,CU,MN,ID,SE,CR,MO,CARTBEQ,VITD,VITK,THIA, RIBF,NIA,VITB6A,VITB12,FOL, PANTAC, BIOT,VITC, VITE, Size:"100g X", num:"100"
+            ,tCHOCDF:CHOCDF/100
           });
         },
       //从list中删除
@@ -143,9 +146,9 @@ export default {
 
 <style scoped>
 .Calculator {
-  margin-top: 10%;
+  margin-top: 2%;
   background-color: rgb(187, 168, 168);
-  height: 80%;
+  height: 94%;
   width: 100%;
 }
 .Calculator-left {
@@ -159,6 +162,13 @@ export default {
   background-color: pink;
   height: 100%;
   width: 40%;
+}
+.Calculator-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: yellow;
 }
 table td{
   border-left:5px
