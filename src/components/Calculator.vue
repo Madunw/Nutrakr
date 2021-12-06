@@ -236,7 +236,7 @@ export default {
   name: "Calculator",
   data() {
     return {
-      //营养值数据库form food.json
+      //营养值数据库 food.json
       foods: foods,
 
       //已选的数据（在表格中展示）
