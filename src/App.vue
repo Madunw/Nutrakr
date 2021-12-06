@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-link to="/HelloWorld">home</router-link>
-    <router-link to="/Calculator">Calculator</router-link>
+    <!-- <router-link to="/Calculator">Calculator</router-link> -->
     <router-view/>
   </div>
 
@@ -28,7 +28,7 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  background-image: url(../static/background.jpg);
+  /* background-image: url(../static/background.jpg); */
   background-size: cover;
 }
 </style>

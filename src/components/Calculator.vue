@@ -207,8 +207,10 @@
     </div>
 
     <!-- 右半部 -->
-    <div class="Calculator-right"></div>
-
+    <div class="Calculator-right">
+      <Form></Form>
+    </div>
+      
     <!-- 底部 -->
     <div class="Calculator-bottom">
      
@@ -229,6 +231,7 @@ import ChartCalorie from "@/components/Charts/ChartCalorie";
 import ChartCarb from "@/components/Charts/ChartCarb";
 import ChartProtein from "@/components/Charts/ChartProtein";
 import ChartFat from "@/components/Charts/ChartFat";
+import Form from "@/components/Form";
 export default {
   name: "Calculator",
   data() {
@@ -356,7 +359,8 @@ export default {
     ChartCalorie,
     ChartCarb,
     ChartProtein,
-    ChartFat
+    ChartFat,
+    Form
   },
 };
 </script>
@@ -366,7 +370,7 @@ export default {
   margin-top: 2%;
   background-color: rgb(187, 168, 168);
   height: 94%;
-  width: 100%;
+  width: 92%;
 }
 .Calculator-left {
   float: left;
@@ -378,13 +382,13 @@ export default {
   float: right;
   background-color: pink;
   height: 100%;
-  width: 40%;
+  width: 30%;
 }
 .Calculator-bottom {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 90%;
   background-color: yellow;
 }
 .Calculator-bottom *{
