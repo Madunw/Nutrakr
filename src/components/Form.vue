@@ -1,5 +1,6 @@
-<template>
-<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+<template >
+<div style="margin-top:30px">
+<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
   
   <el-form-item label="性別" prop="gender">
     <el-radio-group v-model="ruleForm.gender">
@@ -7,19 +8,28 @@
       <el-radio border　:label="2">女性</el-radio>
     </el-radio-group>
      </el-form-item>
-   
   
-  <el-form-item label="年齢" prop="age">
+  <el-form-item label="年齢" prop="age" >
+    <div style="width:200px;margin: 0 auto" >
     <el-input v-model.number="ruleForm.age"></el-input>
+    </div>
   </el-form-item>
+ 
 
-  <el-form-item label="身長" prop="height">
+  <el-form-item label="身長(cm)" prop="height">
+    <div style="width:200px;margin: 0 auto" >
     <el-input v-model.number="ruleForm.height"></el-input>
+    </div>
   </el-form-item>
-
-  <el-form-item label="体重" prop="weight">
+  
+  
+  <el-form-item label="体重(kg)" prop="weight">
+    <div style="width:200px;margin: 0 auto" >
     <el-input v-model.number="ruleForm.weight"></el-input>
+    </div>
   </el-form-item>
+   
+
 
      <el-form-item label="身体活動レベル" prop="pal">
     <el-radio-group v-model="ruleForm.pal">
@@ -34,8 +44,10 @@
     <el-button @click="resetForm('ruleForm')">Reset</el-button>
   </el-form-item>
 </el-form>
+</div>
 </template>
 <script>
+import bus from '../assets/eventBus'
   export default {
     data() {
         var checkAge = (rule, value, callback) => {
@@ -130,7 +142,11 @@
         }else{
           this.CaloriesNeeded = Math.round(this.bmr * 2)
         }
-
+        //eventBusにパラメータを渡す
+        bus.$emit('Cal',this.CaloriesNeeded)
+        bus.$emit('Carb',this.CarbNeeded)
+        bus.$emit('Prot',this.ProteinNeeded)
+        bus.$emit('Fat',this.FatNeeded)
         // this.$refs[formName].validate((valid) => {
         //   if (valid) {
         //     alert('submit!');

@@ -1,29 +1,47 @@
 <template>
-  <ve-liquidfill :data="chartData" height="240px" width="240px" :settings="chartSettings"></ve-liquidfill>
+  <ve-liquidfill :data="chartData" height="240px" width="240px" :settings="chartSettings" label="タンパク質"></ve-liquidfill>
 </template>
 
 <script>
+  import bus from '../../assets/eventBus';
   export default {
+    props: ['sumPro'],
     name:'ChartProtein',
     data () {
       this.chartSettings = {
-        wave: [0.5, 0.3, 0.1],
-        seriesMap: {
-          '上海': {
-            color: ['red', 'green', 'yellow'],
-            radius: '30%',
+      seriesMap: {
+        'タンパク質': {
+          label: {
+            formatter (options) {
+              const {
+                seriesName,
+                value
+              } = options
+              return `${seriesName}\n${value * 100}%`
+            },
+            fontSize: 20,
           }
         }
       }
+    }
       return {
+        sumPro: 0,
+        ProteinNeeded: 0,
         chartData: {
-          columns: ['city', 'percent'],
+          columns: ['Nutrient', 'percent'],
           rows: [{
-            city: '上海',
-            percent: 0.7
+            Nutrient: 'タンパク質',
+            percent: 0
           }]
         }
       }
+    },
+    created(){
+        bus.$on('Prot',(res)=>{
+            this.ProteinNeeded = res
+            this.chartData.rows[0].percent = this.sumPro / this.ProteinNeeded
+        })
     }
   }
+  
 </script>
