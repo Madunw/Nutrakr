@@ -5,8 +5,8 @@
 <script>
   import bus from '../../assets/eventBus';
   export default {
-    props: ['sumPro'],
-    name:'ChartProtein',
+    props: ['sumProt'],
+    name:'ChartProt',
     data () {
       this.chartSettings = {
       seriesMap: {
@@ -17,7 +17,7 @@
                 seriesName,
                 value
               } = options
-              return `${seriesName}\n${value * 100}%`
+              return `${seriesName}\n${Math.round(value * 100)}%`//丸め誤差を回避するため、Math.roundで整数化
             },
             fontSize: 20,
           }
@@ -25,8 +25,8 @@
       }
     }
       return {
-        sumPro: 0,
-        ProteinNeeded: 0,
+        sumProt: 0,
+        ProtNeeded: 0,
         chartData: {
           columns: ['Nutrient', 'percent'],
           rows: [{
@@ -37,10 +37,17 @@
       }
     },
     created(){
-        bus.$on('Prot',(res)=>{
-            this.ProteinNeeded = res
-            this.chartData.rows[0].percent = this.sumPro / this.ProteinNeeded
+        bus.$on('Prot',(res)=>{//busから値を取得
+            this.ProtNeeded = res
+            this.Protpercent = this.sumProt / this.ProtNeeded /100;
+            this.chartData.rows[0].percent = this.Protpercent.toFixed(2)//小数第2位に丸める
         })
+    },
+    watch: {//sumProtの変化を監視し、パーセントを計算し、値をチャットに渡す
+      sumProt: function (val) {
+      this.Protpercent = this.sumProt / this.ProtNeeded /100;
+      this.chartData.rows[0].percent = this.Protpercent.toFixed(2)//小数第2位に丸める
+      }
     }
   }
   

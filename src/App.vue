@@ -66,7 +66,7 @@
         </el-option>
       </el-select>
 
-      {{ sumCarb }}
+
       <!-- 表格 -->
       <el-table :data="list" stripe v-loading="loading" style="width: 100%">
         <!-- 移除按钮 -->
@@ -85,7 +85,7 @@
         <el-table-column prop="name" label="食品名" width="200">
         </el-table-column>
 
-        <el-table-column prop="ENERC_KCAL" label="熱量(kcal)" align="center">
+        <el-table-column prop="ENERC_KCAL" label="カロリー(kcal)" align="center">
         </el-table-column>
 
         <el-table-column prop="CARB" label="炭水化物(g)" align="center">
@@ -218,10 +218,10 @@
     <div class="Calculator-bottom">
      
       <ChartMacronutrients v-bind:totalValue="totalValue"></ChartMacronutrients>
-      <ChartCalorie :sumCal="totalValue.rows[3].gram"></ChartCalorie>
-      <ChartCarb :sumCarb="totalValue.rows[0].gram"></ChartCarb>
-      <ChartProtein :sumPro="totalValue.rows[1].gram"></ChartProtein>
-      <ChartFat :sumFat="totalValue.rows[2].gram"></ChartFat>
+      <ChartCalorie v-bind:sumCal="totalValue.totalCal"></ChartCalorie>
+      <ChartCarb v-bind:sumCarb="totalValue.rows[0].gram"></ChartCarb>
+      <ChartProtein v-bind:sumProt="totalValue.rows[1].gram"></ChartProtein>
+      <ChartFat v-bind:sumFat="totalValue.rows[2].gram"></ChartFat>
     </div>
   </div>
   </div>
@@ -242,18 +242,18 @@ export default {
     return {
       //营养值数据库form food.json
       foods: foods,
-
+      
       //已选的数据（在表格中展示）
       list: [],
       // 合计数据
       totalValue: {
         columns: ["Nutrition", "gram"],
         rows: [
-          { Nutrition: "CARB", gram: 0 },
-          { Nutrition: "PROT", gram: 0 },
-          { Nutrition: "FAT", gram: 0 },
-          { Nutrition: "Cal", gram: 0 },
+          { Nutrition: "炭水化物", gram: 0 },
+          { Nutrition: "タンパク質", gram: 0 },
+          { Nutrition: "脂質", gram: 0 },
         ],
+        totalCal: 0,
       },
     };
   },
@@ -275,7 +275,7 @@ export default {
       this.totalValue.rows[0].gram = sumCarb;
       this.totalValue.rows[1].gram = sumPro;
       this.totalValue.rows[2].gram = sumFat;
-      this.totalValue.rows[2].gram = sumCal;
+      this.totalValue.totalCal = sumCal;
     },
   },
   methods: {

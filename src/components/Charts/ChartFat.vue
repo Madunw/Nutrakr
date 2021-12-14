@@ -1,5 +1,7 @@
 <template>
+
   <ve-liquidfill :data="chartData" height="240px" width="240px" :settings="chartSettings" label="脂質"></ve-liquidfill>
+  
 </template>
 
 <script>
@@ -17,7 +19,7 @@
                 seriesName,
                 value
               } = options
-              return `${seriesName}\n${value * 100}%`
+              return `${seriesName}\n${Math.round(value * 100)}%`//丸め誤差を回避するため、Math.roundで整数化
             },
             fontSize: 20,
           }
@@ -37,10 +39,17 @@
       }
     },
     created(){
-        bus.$on('Fat',(res)=>{
+        bus.$on('Fat',(res)=>{//busから値を取得
             this.FatNeeded = res
-            this.chartData.rows[0].percent = this.sumFat / this.FatNeeded
+            this.Fatpercent = this.sumFat / this.FatNeeded /100;
+            this.chartData.rows[0].percent = this.Fatpercent.toFixed(2)//小数第2位に丸める
         })
+    },
+    watch: {//sumFatの変化を監視し、パーセントを計算し、値をチャットに渡す
+      sumFat: function (val) {
+      this.Fatpercent = this.sumFat / this.FatNeeded/100;
+      this.chartData.rows[0].percent = this.Fatpercent.toFixed(2)//小数第2位に丸める
+      }
     }
   }
   
