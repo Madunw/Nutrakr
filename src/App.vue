@@ -1,6 +1,6 @@
 <template>
-  <div id="app" style="margin-top:100px">
-     <div class="Calculator">
+  <div id="app" >
+    
     <!-- 左半部 -->
     <div class="Calculator-left">
       <!-- 搜索框 -->
@@ -206,12 +206,10 @@
         </el-table-column>
       </el-table>
     </div>
-
+  
     <!-- 右半部 -->
-    <div class="Calculator-right">
-      <!-- <router-link to="/Form">Form</router-link> -->
-      <Form> </Form>
-      <!-- <router-link to="/RightZone">RightZone</router-link> -->
+    <div class="fromBlock-show">
+      <Form v-show="isShow"> </Form>
     </div>
       
     <!-- 底部 -->
@@ -224,7 +222,7 @@
       <ChartFat v-bind:sumFat="totalValue.rows[2].gram"></ChartFat>
     </div>
   </div>
-  </div>
+ 
 
 </template>
 
@@ -236,13 +234,15 @@ import ChartCarb from "@/components/Charts/ChartCarb";
 import ChartProtein from "@/components/Charts/ChartProtein";
 import ChartFat from "@/components/Charts/ChartFat";
 import Form from "@/components/Form";
+
 export default {
   name: "App",
   data() {
     return {
-      //营养值数据库form food.json
+      //抽屉是否显示
+      isShow: true,
+      //营养值数据库from food.json
       foods: foods,
-      
       //已选的数据（在表格中展示）
       list: [],
       // 合计数据
@@ -369,14 +369,14 @@ export default {
     ChartCarb,
     ChartProtein,
     ChartFat,
-    Form
+    Form,
   },
 };
 </script>
 
 <style>
 #app {
-  margin: 0px;
+  margin-top: 100px;
   padding: 0px;
   top: 0;
   left: 0;
@@ -387,28 +387,17 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 100%;
-  height: 88%;
+  height: 80%;
   position: absolute;
   /* background-image: url(../static/background.jpg); */
+  background-color: blueviolet;
   background-size: cover;
-}
-.Calculator {
-  margin-top: 2%;
-  background-color: rgb(204,255,255);
-  height: 94%;
-  width: 92%;
 }
 .Calculator-left {
   float: left;
   background-color: 204,255,255;
   height: 100%;
   width: 70%;
-}
-.Calculator-right {
-  float: right;
-  background-color: pink;
-  height: 75%;
-  width: 30%;
 }
 .Calculator-bottom {
   position: fixed;
@@ -420,7 +409,9 @@ export default {
 .Calculator-bottom *{
   display: inline-block;
 }
+
 table td {
   border-left: 5px;
 }
+
 </style>
