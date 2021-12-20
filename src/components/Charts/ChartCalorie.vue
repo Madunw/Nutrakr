@@ -1,5 +1,5 @@
 <template>
-  <ve-liquidfill :data="chartData" height="240px" width="240px" :settings="chartSettings" label="カロリー" >{{chartData.rows[0].percent}}aaa</ve-liquidfill>
+  <ve-liquidfill :data="chartData" height="240px" width="240px" :settings="chartSettings" label="カロリー" ></ve-liquidfill>
 </template>
 
 <script>

@@ -1,11 +1,13 @@
 <template >
-  <div
-    style="margin-top: 30px"
-    :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'"
-  >
+  <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
     <!-- button -->
-    <div @click="handleDrawer">
-    <drawer ></drawer>
+    <div @click="handleDrawer" class="toggle">
+      <el-button circle
+        ><div class="arrow">
+          <font-awesome-icon
+            :icon="isShow ? 'chevron-right' : 'chevron-left'"
+          /></div
+      ></el-button>
     </div>
     <!-- form -->
     <el-form
@@ -13,12 +15,11 @@
       :rules="rules"
       ref="ruleForm"
       label-width="120px"
-      class="demo-ruleForm"
     >
       <el-form-item label="性別" prop="gender">
         <el-radio-group v-model="ruleForm.gender">
-          <el-radio border:label="1">男性</el-radio>
-          <el-radio border:label="2">女性</el-radio>
+          <el-radio border :label="1">男性</el-radio>
+          <el-radio border :label="2">女性</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -73,9 +74,7 @@
   </div>
 </template>
 <script>
-import bus from "../assets/eventBus";
-import Drawer from "../components/Drawer";
-
+import bus from "../assets/eventBus"; //busで値を受け取る
 export default {
   data() {
     var checkAge = (rule, value, callback) => {
@@ -112,6 +111,7 @@ export default {
       isShow: true,
       bmr: 0,
       CaloriesNeeded: 0,
+      formIsOK: true,
       ruleForm: {
         gender: "",
         height: 0,
@@ -177,17 +177,20 @@ export default {
     },
   },
   methods: {
+    //FormDawerの開け閉め
     handleDrawer() {
       this.isShow = !this.isShow;
     },
-    submitForm(formName) {
-      // 算出した値をbmrに与える
+    //算出した値をbmrに与える
+    bmrCalculate() {
       if (this.ruleForm.gender == 1) {
         this.bmr = this.bmrmale;
       } else {
         this.bmr = this.bmrfemale;
       }
-      //身体活動レベルを掛け、1日カロリを算出
+    },
+    //身体活動レベルを掛け、1日カロリを算出
+    caloriesCalculate() {
       if (this.ruleForm.pal == 1) {
         this.CaloriesNeeded = Math.round(this.bmr * 1.5);
       } else if (this.ruleForm.pal == 2) {
@@ -195,75 +198,80 @@ export default {
       } else {
         this.CaloriesNeeded = Math.round(this.bmr * 2);
       }
-      //eventBusにパラメータを渡す
+    },
+    //eventBusにパラメータを渡す
+    busEvent() {
       bus.$emit("Cal", this.CaloriesNeeded);
       bus.$emit("Carb", this.CarbNeeded);
       bus.$emit("Prot", this.ProteinNeeded);
       bus.$emit("Fat", this.FatNeeded);
+    },
+    //Form正しかを判断
+    submitForm(formName) {
+      this.formIsOK = true;
+      //  Alert when there is an error in the form
       this.$refs[formName].validate((valid) => {
-        if (valid) {
-          comsole.console.log("submit!");
-        } else {
+        if (valid == false) {
           alert("error submit!!");
+          formIsOK = false;
           return false;
         }
       });
+      if ((this.formIsOK = true)) {
+        this.bmrCalculate(); // bmr計算
+
+        this.caloriesCalculate(); //カロリ計算
+
+        this.bmrCalculate(); //eventBusにパラメータを渡す
+
+        //hide formDrawer
+        this.handleDrawer();
+      }
     },
+
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-  },
-  components: {
-    Drawer,
   },
 };
 </script>
 
 <style scoped>
 .fromBlock-show {
-  position: relative;
-  display: flex;
-  float: right;
-  justify-content: center;
-  align-items: center;
-  background-color: pink;
-  height: 80%;
-  width: 27%;
-  border-radius: 16px;
   animation: show 1.5s;
 }
 .fromBlock-hide {
-  position: relative;
-  display: flex;
-  float: right;
-  justify-content: center;
-  align-items: center;
-  background-color: pink;
-  height: 80%;
-  width: 27%;
-  border-radius: 16px;
-  animation: dwawerHide 3s;
   animation: hide 1.5s;
-  left: 500px;
+  left: 514px;
+}
+.toggle {
+  position: absolute;
+  cursor: pointer;
+  top: calc(50% - 40px);
+  left: -20px;
+  border-radius: 50%;
+  border: 5px solid black;
+}
+.arrow {
+  height: 15px;
+  width: 15px;
 }
 /* hide animation */
 @keyframes hide {
-    0% {
-        transform: translateX(-500px);
-    }
-    100% {
-        transform: translateX(0px);
-    }
-
+  0% {
+    transform: translateX(-489px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 /* show animation */
 @keyframes show {
-    0% {
-        transform: translateX(500px);
-    }
-    100% {
-        transform: translateX(0px);
-    }
-
+  0% {
+    transform: translateX(489px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 </style>
