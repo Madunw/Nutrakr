@@ -5,10 +5,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VCharts from 'v-charts';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChevronRight,faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight,faChevronLeft,faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faChevronRight,faChevronLeft)
+library.add(faChevronRight,faChevronLeft,faChevronDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(VCharts);

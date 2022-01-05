@@ -84,6 +84,12 @@ export default {
       setTimeout(() => {
         if (!Number.isInteger(value)) {
           callback(new Error("半角数字で入力してください"));
+        } else {
+          if ((value < 5) | (value > 150)) {
+            callback(new Error("正し年齢を入力してください"));
+          } else {
+            callback();
+          }
         }
       });
     };
@@ -94,6 +100,12 @@ export default {
       setTimeout(() => {
         if (!Number.isInteger(value)) {
           callback(new Error("半角数字で入力してください"));
+        } else {
+          if ((value < 120) | (value > 250)) {
+            callback(new Error("正し身長を入力してください"));
+          } else {
+            callback();
+          }
         }
       });
     };
@@ -104,6 +116,12 @@ export default {
       setTimeout(() => {
         if (!Number.isInteger(value)) {
           callback(new Error("半角数字で入力してください"));
+        } else {
+          if ((value < 30) | (value > 350)) {
+            callback(new Error("正し体重を入力してください"));
+          } else {
+            callback();
+          }
         }
       });
     };
@@ -189,6 +207,7 @@ export default {
         this.bmr = this.bmrfemale;
       }
     },
+
     //身体活動レベルを掛け、1日カロリを算出
     caloriesCalculate() {
       if (this.ruleForm.pal == 1) {
@@ -199,6 +218,7 @@ export default {
         this.CaloriesNeeded = Math.round(this.bmr * 2);
       }
     },
+
     //eventBusにパラメータを渡す
     busEvent() {
       bus.$emit("Cal", this.CaloriesNeeded);
@@ -206,27 +226,28 @@ export default {
       bus.$emit("Prot", this.ProteinNeeded);
       bus.$emit("Fat", this.FatNeeded);
     },
-    //Form正しかを判断
+
+    //Formが正しかを判断
     submitForm(formName) {
       this.formIsOK = true;
       //  Alert when there is an error in the form
       this.$refs[formName].validate((valid) => {
         if (valid == false) {
           alert("error submit!!");
-          formIsOK = false;
+          this.formIsOK = false;
           return false;
         }
+        //Formが正しとき計算する
+        if (this.formIsOK == true) {
+          this.bmrCalculate(); // bmr計算
+
+          this.caloriesCalculate(); //カロリ計算
+
+          this.bmrCalculate(); //eventBusにパラメータを渡す
+          //hide formDrawer
+          this.handleDrawer();
+        }
       });
-      if ((this.formIsOK = true)) {
-        this.bmrCalculate(); // bmr計算
-
-        this.caloriesCalculate(); //カロリ計算
-
-        this.bmrCalculate(); //eventBusにパラメータを渡す
-
-        //hide formDrawer
-        this.handleDrawer();
-      }
     },
 
     resetForm(formName) {

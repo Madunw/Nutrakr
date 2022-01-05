@@ -4,13 +4,13 @@
     
     <!-- 左半部 -->
     <div class="leftBlock">
-      
       <!-- 搜索框 -->
       <el-select
         v-model="name"
         filterable
         v-loading="loading"
         placeholder="Foods e.g. Apple"
+        style="width:60%"
       >
         <el-option
           v-for="item in foods"
@@ -188,7 +188,7 @@
                   </td>
                 </tr>
               </table>
-              <el-button slot="reference">⊽</el-button>
+              <el-button slot="reference"><font-awesome-icon icon='chevron-down'/></el-button>
             </el-popover>
           </template>
         </el-table-column>
@@ -216,7 +216,6 @@
       
     <!-- 底部 -->
     <div class="bottomBlock">
-     <i class="fas fa-angle-right"></i>
       <ChartMacronutrients v-bind:totalValue="totalValue"></ChartMacronutrients>
       <ChartCalorie v-bind:sumCal="totalValue.totalCal"></ChartCalorie>
       <ChartCarb v-bind:sumCarb="totalValue.rows[0].gram"></ChartCarb>
