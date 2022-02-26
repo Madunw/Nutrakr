@@ -1,5 +1,5 @@
 <template >
-  <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
+    <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
     <!-- button -->
     <div @click="handleDrawer" class="toggle">
       <el-button circle
@@ -71,7 +71,9 @@
         <el-button @click="resetForm('ruleForm')">Reset</el-button>
       </el-form-item>
     </el-form>
-  </div>
+    </div>
+    
+ 
 </template>
 <script>
 import bus from "../assets/eventBus"; //busで値を受け取る
@@ -130,6 +132,7 @@ export default {
       bmr: 0,
       CaloriesNeeded: 0,
       formIsOK: true,
+
       ruleForm: {
         gender: "",
         height: 0,
@@ -187,11 +190,11 @@ export default {
     },
     CarbNeeded() {
       //1日の炭水化物摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.28) / 9);
+      return Math.round((this.CaloriesNeeded * 0.58) / 9);
     },
     FatNeeded() {
       //1日の脂質摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.58) / 4);
+      return Math.round((this.CaloriesNeeded * 0.25) / 4);
     },
   },
   methods: {
@@ -243,9 +246,9 @@ export default {
 
           this.caloriesCalculate(); //カロリ計算
 
-          this.bmrCalculate(); //eventBusにパラメータを渡す
+          this.busEvent(); //eventBusにパラメータを渡す
           //hide formDrawer
-          this.handleDrawer();
+          this.handleDrawer();                                 
         }
       });
     },

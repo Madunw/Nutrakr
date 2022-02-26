@@ -25,8 +25,8 @@
       }
     }
       return {
-        sumCarb: 0,
-        CarbNeeded: 0,
+        sumCarb: 97,
+        CarbNeeded: 18,
         chartData: {
           columns: ['Nutrient', 'percent'],
           rows: [{

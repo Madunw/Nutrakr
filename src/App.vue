@@ -1,7 +1,5 @@
 <template>
-
-  <div id="app" >
-    
+  <div id="app">
     <!-- 左半部 -->
     <div class="leftBlock">
       <!-- 搜索框 -->
@@ -10,7 +8,7 @@
         filterable
         v-loading="loading"
         placeholder="Foods e.g. Apple"
-        style="width:60%"
+        style="width: 60%"
       >
         <el-option
           v-for="item in foods"
@@ -68,7 +66,6 @@
         </el-option>
       </el-select>
 
-
       <!-- 表格 -->
       <el-table :data="list" stripe v-loading="loading" style="width: 100%">
         <!-- 移除按钮 -->
@@ -87,7 +84,11 @@
         <el-table-column prop="name" label="食品名" width="200">
         </el-table-column>
 
-        <el-table-column prop="ENERC_KCAL" label="カロリー(kcal)" align="center">
+        <el-table-column
+          prop="ENERC_KCAL"
+          label="カロリー(kcal)"
+          align="center"
+        >
         </el-table-column>
 
         <el-table-column prop="CARB" label="炭水化物(g)" align="center">
@@ -102,7 +103,7 @@
         <el-table-column prop="NACL_EQ" label="食塩(g)" align="center">
         </el-table-column>
 
-        <el-table-column width="150">
+        <el-table-column width="100">
           <template slot-scope="scope">
             <el-popover
               placement="bottom"
@@ -188,32 +189,65 @@
                   </td>
                 </tr>
               </table>
-              <el-button slot="reference"><font-awesome-icon icon='chevron-down'/></el-button>
+              <el-button slot="reference"
+                ><font-awesome-icon icon="chevron-down"
+              /></el-button>
             </el-popover>
           </template>
         </el-table-column>
 
-        <el-table-column prop="num" label="グラム" width="143">
+        <el-table-column prop="num" label="グラム" width="80">
+          <template> 100g </template>
+        </el-table-column>
+
+        <el-table-column label="数量" width="160">
           <template slot-scope="scope">
             <el-input-number
               v-model="scope.row.num"
               @change="sumValue"
               :min="0"
-              :max="9999"
+              :max="99"
               label="数量"
               size="mini"
-              :step="50"
+              :step="1"
             ></el-input-number>
           </template>
         </el-table-column>
       </el-table>
     </div>
-  
+
     <!-- 右半部 -->
     <div class="rightBlock">
       <Form v-show="drawerIsShow" class="form"> </Form>
+      <div class="table">
+       cal
+        <el-progress
+          :text-inside="true"
+          :stroke-width="20"
+          :percentage= (100*totalValue.totalCal/calNeeded).toFixed(0)
+        ></el-progress>
+        carb
+        <el-progress
+          :text-inside="true"
+          :stroke-width="20"
+          :percentage = (100*totalValue.rows[0].gram/carbNeeded).toFixed(0)
+          :color = pink
+        ></el-progress>
+        prot
+        <el-progress
+          :text-inside="true"
+          :stroke-width="20"
+          :percentage = (100*totalValue.rows[1].gram/protNeeded).toFixed(0)
+        ></el-progress>
+        Fat
+        <el-progress
+          :text-inside="true"
+          :stroke-width="20"
+          :percentage = (100*totalValue.rows[2].gram/fatNeeded).toFixed(0)
+        ></el-progress>
+      </div>
     </div>
-      
+
     <!-- 底部 -->
     <div class="bottomBlock">
       <ChartMacronutrients v-bind:totalValue="totalValue"></ChartMacronutrients>
@@ -223,8 +257,6 @@
       <ChartFat v-bind:sumFat="totalValue.rows[2].gram"></ChartFat>
     </div>
   </div>
- 
-
 </template>
 
 <script>
@@ -235,7 +267,7 @@ import ChartCarb from "@/components/Charts/ChartCarb";
 import ChartProtein from "@/components/Charts/ChartProtein";
 import ChartFat from "@/components/Charts/ChartFat";
 import Form from "@/components/Form";
-
+import bus from '@/assets/eventBus';
 
 export default {
   name: "App",
@@ -248,6 +280,10 @@ export default {
       //已选的数据（在表格中展示）
       list: [],
       // 合计数据
+      calNeeded: 0,
+      carbNeeded: 0,
+      protNeeded: 0,
+      fatNeeded: 0,
       totalValue: {
         columns: ["Nutrition", "gram"],
         rows: [
@@ -356,7 +392,7 @@ export default {
         VITC,
         VITE,
         Size: "100g X",
-        num: "100",
+        num: "1",
         tCHOCDF: CARB / 100,
       });
     },
@@ -373,8 +409,26 @@ export default {
     ChartFat,
     Form,
   },
+  created() {
+    bus.$on("Cal", (res) => {
+      //busから値を取得
+      this.calNeeded = res;
+    });
+    bus.$on("Carb", (res) => {
+      //busから値を取得
+      this.carbNeeded = res;
+    });
+    bus.$on("Prot", (res) => {
+      //busから値を取得
+      this.protNeeded = res;
+    });
+    bus.$on("Fat", (res) => {
+      //busから値を取得
+      this.fatNeeded = res;
+    });
+  },
+  
 };
-
 </script>
 
 <style>
@@ -384,7 +438,7 @@ export default {
   top: 0;
   left: 0;
   z-index: -1;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -397,19 +451,19 @@ export default {
 }
 .leftBlock {
   float: left;
-  background-color: 204,255,255;
+  background-color: 204, 255, 255;
   height: 100%;
   width: 72%;
 }
-.rightBlock{
+.rightBlock {
   position: relative;
-  overflow:hidden;
+  overflow: hidden;
   height: 100%;
   float: right;
   width: 28%;
-  background-color: black;
+  background-color: blueviolet;
 }
-.form{
+.form {
   height: 500px;
   width: 480px;
   margin-top: 30px;
@@ -421,20 +475,25 @@ export default {
   align-items: center;
   background-color: pink;
   left: 20px;
+  z-index: 1;
 }
 .bottomBlock {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 90%;
-  background-color: 204,255,153;
+  background-color: 204, 255, 153;
 }
-.bottomBlock *{
+.bottomBlock * {
   display: inline-block;
 }
 
 table td {
   border-left: 5px;
 }
-
+.table {
+  z-index: -1;
+  width: 450px;
+  margin: 50px;
+}
 </style>

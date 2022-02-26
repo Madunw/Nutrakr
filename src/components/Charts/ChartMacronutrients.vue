@@ -1,6 +1,6 @@
 <template>
  
-    <ve-ring :data="totalValue" :extend="extend" height="240px" width="240px" :settings="{radius: [30, 50], offsetY: 100}"></ve-ring>
+    <ve-ring :data="totalValue" :extend="extend" height="240px" width="300px" :settings="{radius: [50, 80], offsetY: 120}"></ve-ring>
   
 </template>
 
