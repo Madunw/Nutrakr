@@ -3,12 +3,14 @@
     <!-- 左半部 -->
     <div class="leftBlock">
       <!-- 搜索框 -->
+      <div class="search">
       <el-select
         v-model="name"
         filterable
         v-loading="loading"
-        placeholder="Foods e.g. Apple"
+        placeholder="食品名を入力してください"
         style="width: 60%"
+
       >
         <el-option
           v-for="item in foods"
@@ -65,7 +67,7 @@
           &nbsp;&nbsp;{{ item.name }}
         </el-option>
       </el-select>
-
+      </div>
       <!-- 表格 -->
       <el-table :data="list" stripe v-loading="loading" style="width: 100%">
         <!-- 移除按钮 -->
@@ -218,54 +220,76 @@
 
     <!-- 右半部 -->
     <div class="rightBlock">
+     
       <Form v-show="drawerIsShow" class="form"> </Form>
+      
       <div class="table">
+         本日の摂取量
+        <div class="progress-block">
        cal
+       <div class="progress">
+        <div class="el-progress-icon">
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.totalCal/calNeeded).toFixed(0)>90 & (100*totalValue.totalCal/calNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.totalCal/calNeeded).toFixed(0)>110"></i></div>
         <el-progress
-          :text-inside="true"
           :stroke-width="20"
           :percentage= (100*totalValue.totalCal/calNeeded).toFixed(0)
+          :status='(100*totalValue.totalCal/calNeeded).toFixed(0)>110?"exception":""'
         ></el-progress>
-        carb
+          </div>
+        </div>
+        <div class="progress-block">
+          carb
+        <div class="progress">
+        <div class="el-progress-icon">
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[0].gram/carbNeeded).toFixed(0)>90 & (100*totalValue.rows[0].gram/carbNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[0].gram/carbNeeded).toFixed(0)>110"></i></div>
         <el-progress
-          :text-inside="true"
           :stroke-width="20"
           :percentage = (100*totalValue.rows[0].gram/carbNeeded).toFixed(0)
-          :color = pink
+          :color = 'customColorMethod'
         ></el-progress>
+        </div>
+        </div>
+        <div class="progress-block">
         prot
+        <div class="progress">
+        <div class="el-progress-icon">
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[1].gram/protNeeded).toFixed(0)>90 & (100*totalValue.rows[1].gram/protNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[1].gram/protNeeded).toFixed(0)>110"></i></div>
         <el-progress
-          :text-inside="true"
           :stroke-width="20"
           :percentage = (100*totalValue.rows[1].gram/protNeeded).toFixed(0)
         ></el-progress>
+        </div>
+        </div>
+        <div class="progress-block">
         Fat
+        <div class="progress">
+        <div class="el-progress-icon">
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[2].gram/fatNeeded).toFixed(0)>90 & (100*totalValue.rows[2].gram/fatNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[2].gram/fatNeeded).toFixed(0)>110"></i></div>
         <el-progress
-          :text-inside="true"
           :stroke-width="20"
           :percentage = (100*totalValue.rows[2].gram/fatNeeded).toFixed(0)
         ></el-progress>
+        </div>
+        </div>
+        
+        </div>
+        <div class="chart">
+          <ChartMacronutrients v-bind:totalValue="totalValue" ></ChartMacronutrients>
+        </div >
+        
       </div>
-    </div>
-
-    <!-- 底部 -->
-    <div class="bottomBlock">
-      <ChartMacronutrients v-bind:totalValue="totalValue"></ChartMacronutrients>
-      <ChartCalorie v-bind:sumCal="totalValue.totalCal"></ChartCalorie>
-      <ChartCarb v-bind:sumCarb="totalValue.rows[0].gram"></ChartCarb>
-      <ChartProtein v-bind:sumProt="totalValue.rows[1].gram"></ChartProtein>
-      <ChartFat v-bind:sumFat="totalValue.rows[2].gram"></ChartFat>
-    </div>
+      
+    
   </div>
 </template>
 
 <script>
 import foods from "../static/foods2.json";
 import ChartMacronutrients from "@/components/Charts/ChartMacronutrients";
-import ChartCalorie from "@/components/Charts/ChartCalorie";
-import ChartCarb from "@/components/Charts/ChartCarb";
-import ChartProtein from "@/components/Charts/ChartProtein";
-import ChartFat from "@/components/Charts/ChartFat";
 import Form from "@/components/Form";
 import bus from '@/assets/eventBus';
 
@@ -317,6 +341,16 @@ export default {
     },
   },
   methods: {
+    //进度条颜色
+    customColorMethod(percentage) {
+        if (percentage > 110) {
+          return '#F56C6C';
+        } else if (percentage > 90) {
+          return '#67C23A';
+        } else {
+          return '#409EFF';
+        }
+      },
     // 加号按钮 -> 加入list(表格)中
     add: function (
       name,
@@ -403,10 +437,6 @@ export default {
   },
   components: {
     ChartMacronutrients,
-    ChartCalorie,
-    ChartCarb,
-    ChartProtein,
-    ChartFat,
     Form,
   },
   created() {
@@ -446,7 +476,7 @@ export default {
   width: 100%;
   height: 80%;
   position: absolute;
-  background-color: blueviolet;
+  background-color: rgb(217, 180, 252);
   background-size: cover;
 }
 .leftBlock {
@@ -455,13 +485,16 @@ export default {
   height: 100%;
   width: 72%;
 }
+.search {
+  width: 400px;
+}
 .rightBlock {
   position: relative;
   overflow: hidden;
   height: 100%;
   float: right;
   width: 28%;
-  background-color: blueviolet;
+  background-color: yellow;
 }
 .form {
   height: 500px;
@@ -493,7 +526,35 @@ table td {
 }
 .table {
   z-index: -1;
-  width: 450px;
-  margin: 50px;
+  width: 350px;
+  height: 50%;
+  margin: 50px  20px 0px 50px;
+}
+.chart {
+  margin: 0 auto;
+  height: 50%;
+  margin: 50px  20px 0px 50px;
+}
+.progress-block {
+  margin: 10px auto;
+}
+.progress {
+  margin: 0px auto;
+  height: 28px;
+}
+.el-progress-icon{
+  width: 5%;
+  font-size:18px;
+  float: left;
+}
+.el-progress--line {
+  width: 95%;
+  float: right;
+}
+.el-progress-bar {
+  width: 90%;
+}
+.el-progress__text {
+  width: 10%;
 }
 </style>
