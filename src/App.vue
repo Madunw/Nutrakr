@@ -58,7 +58,6 @@
                 item.BIOT,
                 item.VITC,
                 item.VITE,
-                item.Size,
                 item.num
               )
             "
@@ -69,11 +68,11 @@
       </el-select>
       </div>
       <!-- 表格 -->
-      <el-table :data="list" stripe v-loading="loading" style="width: 100%">
+      <el-table :data="list_show" stripe v-loading="loading" style="width: 100%" show-summary>
         <!-- 移除按钮 -->
-        <el-table-column align="right" label=" " width="45">
+        <el-table-column align="right" label=" " width="60">
           <template slot-scope="scope">
-            <!-- 从list中移除 -->
+            <!-- 从list/list_show中移除 -->
             <el-button
               size="small"
               circle
@@ -86,6 +85,7 @@
         <el-table-column prop="name" label="食品名" width="200">
         </el-table-column>
 
+        <el-table-column label="栄養成分">
         <el-table-column
           prop="ENERC_KCAL"
           label="カロリー(kcal)"
@@ -96,7 +96,7 @@
         <el-table-column prop="CARB" label="炭水化物(g)" align="center">
         </el-table-column>
 
-        <el-table-column prop="PROT" label="たんぱく質(g)" align="center">
+        <el-table-column prop='PROT' label="たんぱく質(g)" align="center">
         </el-table-column>
 
         <el-table-column prop="FAT" label="脂質(g)" align="center">
@@ -105,89 +105,88 @@
         <el-table-column prop="NACL_EQ" label="食塩(g)" align="center">
         </el-table-column>
 
-        <el-table-column width="100">
+        <el-table-column label="ミネラル/ビタミン" width="90">
           <template slot-scope="scope">
             <el-popover
               placement="bottom"
               visible-arrow="true"
-              width="50px"
               trigger="click"
             >
               <table style="font-size: 4px">
                 <tr>
-                  <td>・糖質:&nbsp;&nbsp;{{ list[scope.$index].CHOAVL }}g</td>
-                  <td>・食物繊維:&nbsp;&nbsp;{{ list[scope.$index].FIB }}g</td>
+                  <td>・糖質:&nbsp;&nbsp;{{ list_show[scope.$index].CHOAVL }}g</td>
+                  <td>・食物繊維:&nbsp;&nbsp;{{ list_show[scope.$index].FIB }}g</td>
                   <td>
-                    ・ナトリウム:&nbsp;&nbsp;{{ list[scope.$index].NA }}mg
+                    ・ナトリウム:&nbsp;&nbsp;{{ list_show[scope.$index].NA }}mg
                   </td>
-                  <td>・カリウム:&nbsp;&nbsp;{{ list[scope.$index].K }}mg</td>
+                  <td>・カリウム:&nbsp;&nbsp;{{ list_show[scope.$index].K }}mg</td>
                   <td>
-                    ・カルシウム:&nbsp;&nbsp;{{ list[scope.$index].CA }}mg
+                    ・カルシウム:&nbsp;&nbsp;{{ list_show[scope.$index].CA }}mg
                   </td>
                   <td>
-                    ・マグネシウム:&nbsp;&nbsp;{{ list[scope.$index].MG }}mg
+                    ・マグネシウム:&nbsp;&nbsp;{{ list_show[scope.$index].MG }}mg
                   </td>
-                  <td>・リン:&nbsp;&nbsp;{{ list[scope.$index].P }}mg</td>
+                  <td>・リン:&nbsp;&nbsp;{{ list_show[scope.$index].P }}mg</td>
                 </tr>
                 <tr>
-                  <td>・鉄:&nbsp;&nbsp;{{ list[scope.$index].FE }}mg</td>
-                  <td>・亜鉛:&nbsp;&nbsp;{{ list[scope.$index].ZN }}mg</td>
-                  <td>・銅:&nbsp;&nbsp;{{ list[scope.$index].CU }}mg</td>
-                  <td>・マンガン:&nbsp;&nbsp;{{ list[scope.$index].MN }}mg</td>
-                  <td>・ヨウ素:&nbsp;&nbsp;{{ list[scope.$index].ID }}μg</td>
-                  <td>・セレン:&nbsp;&nbsp;{{ list[scope.$index].SE }}μg</td>
-                  <td>・クロム:&nbsp;&nbsp;{{ list[scope.$index].CR }}μg</td>
+                  <td>・鉄:&nbsp;&nbsp;{{ list_show[scope.$index].FE }}mg</td>
+                  <td>・亜鉛:&nbsp;&nbsp;{{ list_show[scope.$index].ZN }}mg</td>
+                  <td>・銅:&nbsp;&nbsp;{{ list_show[scope.$index].CU }}mg</td>
+                  <td>・マンガン:&nbsp;&nbsp;{{ list_show[scope.$index].MN }}mg</td>
+                  <td>・ヨウ素:&nbsp;&nbsp;{{ list_show[scope.$index].ID }}μg</td>
+                  <td>・セレン:&nbsp;&nbsp;{{ list_show[scope.$index].SE }}μg</td>
+                  <td>・クロム:&nbsp;&nbsp;{{ list_show[scope.$index].CR }}μg</td>
                 </tr>
                 <tr>
                   <td>
-                    ・モリブデン:&nbsp;&nbsp;{{ list[scope.$index].MO }}μg
+                    ・モリブデン:&nbsp;&nbsp;{{ list_show[scope.$index].MO }}μg
                   </td>
                   <td>
-                    ・ビタミンA:&nbsp;&nbsp;{{ list[scope.$index].CARTBEQ }}μg
+                    ・ビタミンA:&nbsp;&nbsp;{{ list_show[scope.$index].CARTBEQ }}μg
                   </td>
                   <td>
-                    ・ビタミンC: &nbsp;&nbsp;{{ list[scope.$index].VITC }}μg
+                    ・ビタミンC: &nbsp;&nbsp;{{ list_show[scope.$index].VITC }}μg
                   </td>
                   <td>
-                    ・ビタミンD:&nbsp;&nbsp;{{ list[scope.$index].VITD }}μg
+                    ・ビタミンD:&nbsp;&nbsp;{{ list_show[scope.$index].VITD }}μg
                   </td>
                   <td>
-                    ・ビタミンE:&nbsp;&nbsp;{{ list[scope.$index].VITE }}μg
+                    ・ビタミンE:&nbsp;&nbsp;{{ list_show[scope.$index].VITE }}μg
                   </td>
                   <td>
-                    ・ビタミンK:&nbsp;&nbsp;{{ list[scope.$index].VITK }}μg
+                    ・ビタミンK:&nbsp;&nbsp;{{ list_show[scope.$index].VITK }}μg
                   </td>
                   <td>
                     ・ビタミンB<sub>1</sub>:&nbsp;&nbsp;{{
-                      list[scope.$index].THIA
+                      list_show[scope.$index].THIA
                     }}mg
                   </td>
                 </tr>
                 <tr>
                   <td>
                     ・ビタミンB<sub>2</sub>:&nbsp;&nbsp;{{
-                      list[scope.$index].RIBF
+                      list_show[scope.$index].RIBF
                     }}mg
                   </td>
                   <td>
-                    ・ナイアシン:&nbsp;&nbsp;{{ list[scope.$index].NIA }}mg
+                    ・ナイアシン:&nbsp;&nbsp;{{ list_show[scope.$index].NIA }}mg
                   </td>
                   <td>
                     ・ビタミンB<sub>6</sub>:&nbsp;&nbsp;{{
-                      list[scope.$index].VITB6A
+                      list_show[scope.$index].VITB6A
                     }}mg
                   </td>
                   <td>
                     ・ビタミンB<sub>12</sub>:&nbsp;&nbsp;{{
-                      list[scope.$index].VITB12
+                      list_show[scope.$index].VITB12
                     }}μg
                   </td>
-                  <td>・ 葉酸:&nbsp;&nbsp;{{ list[scope.$index].FOL }}μg</td>
+                  <td>・ 葉酸:&nbsp;&nbsp;{{ list_show[scope.$index].FOL }}μg</td>
                   <td>
-                    ・パントテン酸:&nbsp;&nbsp;{{ list[scope.$index].PANTAC }}mg
+                    ・パントテン酸:&nbsp;&nbsp;{{ list_show[scope.$index].PANTAC }}mg
                   </td>
                   <td>
-                    ・ビオチン:&nbsp;&nbsp;{{ list[scope.$index].BIOT }}μg
+                    ・ビオチン:&nbsp;&nbsp;{{ list_show[scope.$index].BIOT }}μg
                   </td>
                 </tr>
               </table>
@@ -197,22 +196,19 @@
             </el-popover>
           </template>
         </el-table-column>
-
-        <el-table-column prop="num" label="グラム" width="80">
-          <template> 100g </template>
         </el-table-column>
 
-        <el-table-column label="数量" width="160">
+        <el-table-column label="グラム" width="200">
           <template slot-scope="scope">
             <el-input-number
               v-model="scope.row.num"
-              @change="sumValue"
+              @change="sumValue();list_value_by_num(scope.row.num/100,scope.$index);"
               :min="0"
-              :max="99"
-              label="数量"
+              :max="9999"
+              label="グラム"
               size="mini"
-              :step="1"
-            ></el-input-number>
+              :step="50"
+            ></el-input-number>グラム
           </template>
         </el-table-column>
       </el-table>
@@ -229,12 +225,12 @@
        cal
        <div class="progress">
         <div class="el-progress-icon">
-          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.totalCal/calNeeded).toFixed(0)>90 & (100*totalValue.totalCal/calNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.totalCal/calNeeded).toFixed(0)>90 & (100*totalValue.totalCal/calNeeded).toFixed(0)<=110"></i>
           <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.totalCal/calNeeded).toFixed(0)>110"></i></div>
         <el-progress
           :stroke-width="20"
           :percentage= (100*totalValue.totalCal/calNeeded).toFixed(0)
-          :status='(100*totalValue.totalCal/calNeeded).toFixed(0)>110?"exception":""'
+          :color = 'customColorMethod'
         ></el-progress>
           </div>
         </div>
@@ -242,7 +238,7 @@
           carb
         <div class="progress">
         <div class="el-progress-icon">
-          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[0].gram/carbNeeded).toFixed(0)>90 & (100*totalValue.rows[0].gram/carbNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[0].gram/carbNeeded).toFixed(0)>90 & (100*totalValue.rows[0].gram/carbNeeded).toFixed(0)<=110"></i>
           <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[0].gram/carbNeeded).toFixed(0)>110"></i></div>
         <el-progress
           :stroke-width="20"
@@ -255,7 +251,7 @@
         prot
         <div class="progress">
         <div class="el-progress-icon">
-          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[1].gram/protNeeded).toFixed(0)>90 & (100*totalValue.rows[1].gram/protNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[1].gram/protNeeded).toFixed(0)>90 & (100*totalValue.rows[1].gram/protNeeded).toFixed(0)<=110"></i>
           <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[1].gram/protNeeded).toFixed(0)>110"></i></div>
         <el-progress
           :stroke-width="20"
@@ -267,7 +263,7 @@
         Fat
         <div class="progress">
         <div class="el-progress-icon">
-          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[2].gram/fatNeeded).toFixed(0)>90 & (100*totalValue.rows[2].gram/fatNeeded).toFixed(0)<110"></i>
+          <i class="el-icon-success" style="color:#67C23A" v-show="(100*totalValue.rows[2].gram/fatNeeded).toFixed(0)>90 & (100*totalValue.rows[2].gram/fatNeeded).toFixed(0)<=110"></i>
           <i class="el-icon-warning" style="color:#F56C6C" v-show="(100*totalValue.rows[2].gram/fatNeeded).toFixed(0)>110"></i></div>
         <el-progress
           :stroke-width="20"
@@ -303,6 +299,7 @@ export default {
       foods: foods,
       //已选的数据（在表格中展示）
       list: [],
+      list_show: [],
       // 合计数据
       calNeeded: 0,
       carbNeeded: 0,
@@ -320,6 +317,10 @@ export default {
     };
   },
   computed: {
+    
+
+  },
+  methods: {
     //将合计值传给totalValue
     sumValue() {
       var sumCarb = this.list
@@ -334,13 +335,47 @@ export default {
       var sumCal = this.list
         .map((row) => row.ENERC_KCAL * row.num)
         .reduce((acc, cur) => parseInt(cur) + acc, 0); //计算list中每个Cal与num乘积合计值
-      this.totalValue.rows[0].gram = sumCarb;
-      this.totalValue.rows[1].gram = sumPro;
-      this.totalValue.rows[2].gram = sumFat;
-      this.totalValue.totalCal = sumCal;
+      this.totalValue.rows[0].gram = sumCarb/100;
+      this.totalValue.rows[1].gram = sumPro/100;
+      this.totalValue.rows[2].gram = sumFat/100;
+      this.totalValue.totalCal = sumCal/100;
     },
-  },
-  methods: {
+    // 计算LIST属性
+    list_value_by_num(num,index){
+      this.list_show[index].CARB = (this.list[index].CARB * num).toFixed(1);
+      this.list_show[index].PROT = (this.list[index].PROT * num).toFixed(1);
+      this.list_show[index].FAT =  (this.list[index].FAT * num).toFixed(1);
+      this.list_show[index].ENERC_KCAL =  (this.list[index].ENERC_KCAL  * num).toFixed(1);
+      this.list_show[index].NACL_EQ =  (this.list[index].NACL_EQ * num).toFixed(1);
+      this.list_show[index].CHOAVL =  (this.list[index].CHOAVL * num).toFixed(1);
+      this.list_show[index].FIB =  (this.list[index].FIB * num).toFixed(1);
+      this.list_show[index].NA =  (this.list[index].NA * num).toFixed(1);
+      this.list_show[index].K =  (this.list[index].K * num).toFixed(1);
+      this.list_show[index].CA =  (this.list[index].CA * num).toFixed(1);
+      this.list_show[index].MG =  (this.list[index].MG * num).toFixed(1);
+      this.list_show[index].P =  (this.list[index].P * num).toFixed(1);
+      this.list_show[index].FE =  (this.list[index].FEB * num).toFixed(1);
+      this.list_show[index].ZN =  (this.list[index].ZNB * num).toFixed(1);
+      this.list_show[index].CU =  (this.list[index].CU * num).toFixed(1);
+      this.list_show[index].MN =  (this.list[index].MN * num).toFixed(1);
+      this.list_show[index].ID =  (this.list[index].ID * num).toFixed(1);
+      this.list_show[index].SE =  (this.list[index].SE * num).toFixed(1);
+      this.list_show[index].CR =  (this.list[index].CR * num).toFixed(1);
+      this.list_show[index].MO =  (this.list[index].MO * num).toFixed(1);
+      this.list_show[index].CARTBEQ =  (this.list[index].CARTBEQ * num).toFixed(1);
+      this.list_show[index].VITD =  (this.list[index].VITD * num).toFixed(1);
+      this.list_show[index].VITK =  (this.list[index].VITK * num).toFixed(1);
+      this.list_show[index].THIA =  (this.list[index].THIA * num).toFixed(1);
+      this.list_show[index].RIBF =  (this.list[index].RIBF * num).toFixed(1);
+      this.list_show[index].NIA =  (this.list[index].NIA * num).toFixed(1);
+      this.list_show[index].VITB6A =  (this.list[index].VITB6A * num).toFixed(1);
+      this.list_show[index].VITB12 =  (this.list[index].VITB12 * num).toFixed(1);
+      this.list_show[index].FOL =  (this.list[index].FOL * num).toFixed(1);
+      this.list_show[index].PANTAC =  (this.list[index].PANTAC * num).toFixed(1);
+      this.list_show[index].BIOT =  (this.list[index].BIOT * num).toFixed(1);
+      this.list_show[index].VITC =  (this.list[index].VITC * num).toFixed(1);
+      this.list_show[index].VITE =  (this.list[index].VITE * num).toFixed(1);
+    },
     //进度条颜色
     customColorMethod(percentage) {
         if (percentage > 110) {
@@ -351,7 +386,7 @@ export default {
           return '#409EFF';
         }
       },
-    // 加号按钮 -> 加入list(表格)中
+    // 加号按钮 -> 加入list/listshow(表格)中
     add: function (
       name,
       CARB,
@@ -387,8 +422,6 @@ export default {
       BIOT,
       VITC,
       VITE,
-      Size,
-      num
     ) {
       this.list.push({
         name,
@@ -425,14 +458,52 @@ export default {
         BIOT,
         VITC,
         VITE,
-        Size: "100g X",
-        num: "1",
+        num: "100",
+        tCHOCDF: CARB / 100,
+      });
+      this.list_show.push({
+        name,
+        CARB,
+        PROT,
+        FAT,
+        ENERC_KCAL,
+        NACL_EQ,
+        CHOAVL,
+        FIB,
+        NA,
+        K,
+        CA,
+        MG,
+        P,
+        FE,
+        ZN,
+        CU,
+        MN,
+        ID,
+        SE,
+        CR,
+        MO,
+        CARTBEQ,
+        VITD,
+        VITK,
+        THIA,
+        RIBF,
+        NIA,
+        VITB6A,
+        VITB12,
+        FOL,
+        PANTAC,
+        BIOT,
+        VITC,
+        VITE,
+        num: "100",
         tCHOCDF: CARB / 100,
       });
     },
-    //delete from list
+    //delete from list/list_show
     handleDelete(index) {
       this.list.splice(index, 1);
+      this.list_show.splice(index, 1);
     },
   },
   components: {
@@ -556,5 +627,8 @@ table td {
 }
 .el-progress__text {
   width: 10%;
+}
+.el-popover__reference{
+  width: 20px;
 }
 </style>
