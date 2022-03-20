@@ -102,8 +102,8 @@
         <el-table-column prop="FAT" label="脂質(g)" align="center">
         </el-table-column>
 
-        <el-table-column prop="NACL_EQ" label="食塩(g)" align="center">
-        </el-table-column>
+        <el-table-column prop="NACL_EQ" label="食塩" align="center">
+        </el-table-column>g
 
         <el-table-column label="ミネラル/ビタミン" width="90">
           <template slot-scope="scope">
@@ -190,9 +190,7 @@
                   </td>
                 </tr>
               </table>
-              <el-button slot="reference"
-                ><font-awesome-icon icon="chevron-down"
-              /></el-button>
+              <el-button slot="reference" circle size='small' icon="el-icon-arrow-down" style="width: 32px"></el-button>
             </el-popover>
           </template>
         </el-table-column>
@@ -208,7 +206,7 @@
               label="グラム"
               size="mini"
               :step="50"
-            ></el-input-number>グラム
+            ></el-input-number>&nbsp;&nbsp;g
           </template>
         </el-table-column>
       </el-table>
@@ -284,8 +282,8 @@
 </template>
 
 <script>
-import foods from "../static/foods2.json";
-import ChartMacronutrients from "@/components/Charts/ChartMacronutrients";
+import foods from "../static/foods.json";
+import ChartMacronutrients from "@/components/ChartMacronutrients";
 import Form from "@/components/Form";
 import bus from '@/assets/eventBus';
 
