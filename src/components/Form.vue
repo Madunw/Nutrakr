@@ -1,5 +1,5 @@
-<template >
-    <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
+<template>
+  <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
     <!-- button -->
     <div @click="handleDrawer" class="toggle">
       <el-button circle
@@ -71,62 +71,60 @@
         <el-button @click="resetForm('ruleForm')">Reset</el-button>
       </el-form-item>
     </el-form>
-    </div>
-    
- 
+  </div>
 </template>
 <script>
-import bus from "../assets/eventBus"; //busで値を受け取る
+import bus from '../assets/eventBus' // busで値を受け取る
 export default {
-  data() {
+  data () {
     var checkAge = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("年齢を入力してください"));
+        return callback(new Error('年齢を入力してください'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
-          callback(new Error("半角数字で入力してください"));
+          callback(new Error('半角数字で入力してください'))
         } else {
           if ((value < 5) | (value > 150)) {
-            callback(new Error("正し年齢を入力してください"));
+            callback(new Error('正し年齢を入力してください'))
           } else {
-            callback();
+            callback()
           }
         }
-      });
-    };
+      })
+    }
     var checkHeight = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("身長を入力してください"));
+        return callback(new Error('身長を入力してください'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
-          callback(new Error("半角数字で入力してください"));
+          callback(new Error('半角数字で入力してください'))
         } else {
           if ((value < 120) | (value > 250)) {
-            callback(new Error("正し身長を入力してください"));
+            callback(new Error('正し身長を入力してください'))
           } else {
-            callback();
+            callback()
           }
         }
-      });
-    };
+      })
+    }
     var checkWeight = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("体重を入力してください"));
+        return callback(new Error('体重を入力してください'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
-          callback(new Error("半角数字で入力してください"));
+          callback(new Error('半角数字で入力してください'))
         } else {
           if ((value < 30) | (value > 350)) {
-            callback(new Error("正し体重を入力してください"));
+            callback(new Error('正し体重を入力してください'))
           } else {
-            callback();
+            callback()
           }
         }
-      });
-    };
+      })
+    }
     return {
       isShow: true,
       bmr: 0,
@@ -134,36 +132,36 @@ export default {
       formIsOK: true,
 
       ruleForm: {
-        gender: "",
+        gender: '',
         height: 0,
         weight: 0,
         age: 0,
-        pal: "",
+        pal: ''
       },
       rules: {
         gender: [
           {
             required: true,
-            message: "性別を選択してください",
-            trigger: "change",
-          },
+            message: '性別を選択してください',
+            trigger: 'change'
+          }
         ],
-        age: [{ validator: checkAge, trigger: "blur" }],
-        height: [{ validator: checkHeight, trigger: "blur" }],
-        weight: [{ validator: checkWeight, trigger: "blur" }],
+        age: [{ validator: checkAge, trigger: 'blur' }],
+        height: [{ validator: checkHeight, trigger: 'blur' }],
+        weight: [{ validator: checkWeight, trigger: 'blur' }],
         pal: [
           {
             required: true,
-            message: "身体活動レベルを選択してください",
-            trigger: "change",
-          },
-        ],
-      },
-    };
+            message: '身体活動レベルを選択してください',
+            trigger: 'change'
+          }
+        ]
+      }
+    }
   },
   computed: {
-    bmrmale() {
-      //男性のBMRを算出
+    bmrmale () {
+      // 男性のBMRを算出
       return Math.round(
         ((0.0481 * this.ruleForm.weight +
           0.0234 * this.ruleForm.height -
@@ -171,10 +169,10 @@ export default {
           0.4235) *
           1000) /
           4.186
-      );
+      )
     },
-    bmrfemale() {
-      //女性のBMRを算出
+    bmrfemale () {
+      // 女性のBMRを算出
       return Math.round(
         ((0.0481 * this.ruleForm.weight +
           0.0234 * this.ruleForm.height -
@@ -182,82 +180,82 @@ export default {
           0.9708) *
           1000) /
           4.186
-      );
+      )
     },
-    ProteinNeeded() {
-      //1日のタンパク質摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.17) / 4);
+    ProteinNeeded () {
+      // 1日のタンパク質摂取量を算出
+      return Math.round((this.CaloriesNeeded * 0.17) / 4)
     },
-    CarbNeeded() {
-      //1日の炭水化物摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.58) / 9);
+    CarbNeeded () {
+      // 1日の炭水化物摂取量を算出
+      return Math.round((this.CaloriesNeeded * 0.58) / 9)
     },
-    FatNeeded() {
-      //1日の脂質摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.25) / 4);
-    },
+    FatNeeded () {
+      // 1日の脂質摂取量を算出
+      return Math.round((this.CaloriesNeeded * 0.25) / 4)
+    }
   },
   methods: {
-    //FormDawerの開け閉め
-    handleDrawer() {
-      this.isShow = !this.isShow;
+    // FormDawerの開け閉め
+    handleDrawer () {
+      this.isShow = !this.isShow
     },
-    //算出した値をbmrに与える
-    bmrCalculate() {
-      if (this.ruleForm.gender == 1) {
-        this.bmr = this.bmrmale;
+    // 算出した値をbmrに与える
+    bmrCalculate () {
+      if (this.ruleForm.gender === 1) {
+        this.bmr = this.bmrmale
       } else {
-        this.bmr = this.bmrfemale;
+        this.bmr = this.bmrfemale
       }
     },
 
-    //身体活動レベルを掛け、1日カロリを算出
-    caloriesCalculate() {
-      if (this.ruleForm.pal == 1) {
-        this.CaloriesNeeded = Math.round(this.bmr * 1.5);
-      } else if (this.ruleForm.pal == 2) {
-        this.CaloriesNeeded = Math.round(this.bmr * 1.75);
+    // 身体活動レベルを掛け、1日カロリを算出
+    caloriesCalculate () {
+      if (this.ruleForm.pal === 1) {
+        this.CaloriesNeeded = Math.round(this.bmr * 1.5)
+      } else if (this.ruleForm.pal === 2) {
+        this.CaloriesNeeded = Math.round(this.bmr * 1.75)
       } else {
-        this.CaloriesNeeded = Math.round(this.bmr * 2);
+        this.CaloriesNeeded = Math.round(this.bmr * 2)
       }
     },
 
-    //eventBusにパラメータを渡す
-    busEvent() {
-      bus.$emit("Cal", this.CaloriesNeeded);
-      bus.$emit("Carb", this.CarbNeeded);
-      bus.$emit("Prot", this.ProteinNeeded);
-      bus.$emit("Fat", this.FatNeeded);
+    // eventBusにパラメータを渡す
+    busEvent () {
+      bus.$emit('Cal', this.CaloriesNeeded)
+      bus.$emit('Carb', this.CarbNeeded)
+      bus.$emit('Prot', this.ProteinNeeded)
+      bus.$emit('Fat', this.FatNeeded)
     },
 
-    //Formが正しかを判断
-    submitForm(formName) {
-      this.formIsOK = true;
+    // Formが正しかを判断
+    submitForm (formName) {
+      this.formIsOK = true
       //  Alert when there is an error in the form
       this.$refs[formName].validate((valid) => {
-        if (valid == false) {
-          alert("error submit!!");
-          this.formIsOK = false;
-          return false;
+        if (valid === false) {
+          alert('error submit!!')
+          this.formIsOK = false
+          return false
         }
-        //Formが正しとき計算する
-        if (this.formIsOK == true) {
-          this.bmrCalculate(); // bmr計算
+        // Formが正しとき計算する
+        if (this.formIsOK === true) {
+          this.bmrCalculate() // bmr計算
 
-          this.caloriesCalculate(); //カロリ計算
+          this.caloriesCalculate() // カロリ計算
 
-          this.busEvent(); //eventBusにパラメータを渡す
-          //hide formDrawer
-          this.handleDrawer();                                 
+          this.busEvent() // eventBusにパラメータを渡す
+          // hide formDrawer
+          this.handleDrawer()
         }
-      });
+      })
     },
 
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-  },
-};
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
+}
 </script>
 
 <style scoped>

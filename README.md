@@ -1,6 +1,6 @@
-# test
+# intakecalculator
 
-> A Vue.js project
+> intakecalculator
 
 ## Build Setup
 
