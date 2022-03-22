@@ -1,6 +1,6 @@
 <template>
   <div :class="isShow ? 'fromBlock-show' : 'fromBlock-hide'">
-    <!-- button -->
+    <!-- button -->aa{{$store.getters.ProteinNeeded}}bb{{$store.state.form.caloriesNeeded}}
     <div @click="handleDrawer" class="toggle">
       <el-button circle
         ><div class="arrow">
@@ -43,22 +43,19 @@
 
       <el-form-item label="身体活動レベル" prop="pal">
         <el-radio-group v-model="ruleForm.pal">
-          <el-tooltip placement="top" effect="light">
-            <div slot="content">
-              生活の大部分が座位で、<br />静的な活動が中心の場合
-            </div>
+          <el-tooltip
+        effect="light"
+        content="生活の大部分が座位で、静的な活動が中心の場合"
+        placement="top-start"
+      >
             <el-radio :label="1" border>低い</el-radio>
           </el-tooltip>
-          <el-tooltip placement="top" effect="light">
-            <div slot="content">
-              座位中心の仕事だが、職場内での移動や立位<br />での作業・接客等、あるいは通勤・買物・家<br />事、軽いスポーツ等のいずれかを含む場合
-            </div>
+          <el-tooltip placement="top" effect="light" content="座位中心の仕事だが、職場内での移動や立位での作業・接客等、あるいは通勤・買物・家事、軽いスポーツ等のいずれかを含む場合">
+            
             <el-radio :label="2" border>ふつう</el-radio>
           </el-tooltip>
-          <el-tooltip placement="top" effect="light">
-            <div slot="content">
-              移動や立位の多い仕事への従事者。<br />あるいは、スポーツなど余暇における<br />活発な運動習慣をもっている場合
-            </div>
+          <el-tooltip placement="top" effect="light" content="移動や立位の多い仕事への従事者。あるいは、スポーツなど余暇における活発な運動習慣をもっている場合">
+          
             <el-radio :label="3" border>高い</el-radio>
           </el-tooltip>
         </el-radio-group>
@@ -73,10 +70,13 @@
     </el-form>
   </div>
 </template>
+
 <script>
-import bus from '../assets/eventBus' // busで値を受け取る
+import {mapState} from 'vuex'
 export default {
+  name: 'Form',
   data () {
+    
     var checkAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('年齢を入力してください'))
@@ -127,17 +127,16 @@ export default {
     }
     return {
       isShow: true,
-      bmr: 0,
-      CaloriesNeeded: 0,
       formIsOK: true,
-
-      ruleForm: {
-        gender: '',
-        height: 0,
-        weight: 0,
-        age: 0,
-        pal: ''
-      },
+      bmr: 0,
+        ruleForm: {
+          gender: '',
+          height: 0,
+          weight: 0,
+          age: 0,
+          pal: ''
+        },
+      // 表单规则
       rules: {
         gender: [
           {
@@ -160,6 +159,8 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+    "caloriesNeeded": state => state.form.caloriesNeeded,
     bmrmale () {
       // 男性のBMRを算出
       return Math.round(
@@ -170,6 +171,7 @@ export default {
           1000) /
           4.186
       )
+
     },
     bmrfemale () {
       // 女性のBMRを算出
@@ -182,25 +184,33 @@ export default {
           4.186
       )
     },
-    ProteinNeeded () {
-      // 1日のタンパク質摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.17) / 4)
-    },
-    CarbNeeded () {
-      // 1日の炭水化物摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.58) / 9)
-    },
-    FatNeeded () {
-      // 1日の脂質摂取量を算出
-      return Math.round((this.CaloriesNeeded * 0.25) / 4)
-    }
-  },
+})
+},
   methods: {
+     
     // FormDawerの開け閉め
     handleDrawer () {
       this.isShow = !this.isShow
     },
-    // 算出した値をbmrに与える
+    // Formが正しかを判断
+    submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+          this.formCalculate()
+          // hide formDrawer
+          this.handleDrawer()
+          } 
+        });
+      },
+    // 重置form
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    formCalculate(){
+          this.bmrCalculate() // bmr計算
+          this.$store.commit('getRequired',this.bmr,this.ruleForm.pal) // 把bmr传给vuex的方法getRequired
+        },
+        // 算出した値をbmrに与える
     bmrCalculate () {
       if (this.ruleForm.gender === 1) {
         this.bmr = this.bmrmale
@@ -208,92 +218,45 @@ export default {
         this.bmr = this.bmrfemale
       }
     },
-
-    // 身体活動レベルを掛け、1日カロリを算出
-    caloriesCalculate () {
-      if (this.ruleForm.pal === 1) {
-        this.CaloriesNeeded = Math.round(this.bmr * 1.5)
-      } else if (this.ruleForm.pal === 2) {
-        this.CaloriesNeeded = Math.round(this.bmr * 1.75)
-      } else {
-        this.CaloriesNeeded = Math.round(this.bmr * 2)
-      }
-    },
-
-    // eventBusにパラメータを渡す
-    busEvent () {
-      bus.$emit('Cal', this.CaloriesNeeded)
-      bus.$emit('Carb', this.CarbNeeded)
-      bus.$emit('Prot', this.ProteinNeeded)
-      bus.$emit('Fat', this.FatNeeded)
-    },
-
-    // Formが正しかを判断
-    submitForm (formName) {
-      this.formIsOK = true
-      //  Alert when there is an error in the form
-      this.$refs[formName].validate((valid) => {
-        if (valid === false) {
-          alert('error submit!!')
-          this.formIsOK = false
-          return false
-        }
-        // Formが正しとき計算する
-        if (this.formIsOK === true) {
-          this.bmrCalculate() // bmr計算
-
-          this.caloriesCalculate() // カロリ計算
-
-          this.busEvent() // eventBusにパラメータを渡す
-          // hide formDrawer
-          this.handleDrawer()
-        }
-      })
-    },
-
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
-    }
   }
 }
 </script>
-
 <style scoped>
-.fromBlock-show {
-  animation: show 1.5s;
-}
-.fromBlock-hide {
-  animation: hide 1.5s;
-  left: 514px;
-}
-.toggle {
-  position: absolute;
-  cursor: pointer;
-  top: calc(50% - 40px);
-  left: -20px;
-  border-radius: 50%;
-  border: 5px solid black;
-}
-.arrow {
-  height: 15px;
-  width: 15px;
-}
-/* hide animation */
-@keyframes hide {
-  0% {
-    transform: translateX(-489px);
+  .fromBlock-show {
+    animation: show 1.5s;
   }
-  100% {
-    transform: translateX(0px);
+  .fromBlock-hide {
+    animation: hide 1.5s;
+    left: 514px;
   }
-}
-/* show animation */
-@keyframes show {
-  0% {
-    transform: translateX(489px);
+  .toggle {
+    position: absolute;
+    cursor: pointer;
+    top: calc(50% - 40px);
+    left: -20px;
+    border-radius: 50%;
+    border: 5px solid black;
   }
-  100% {
-    transform: translateX(0px);
+  .arrow {
+    height: 15px;
+    width: 15px;
   }
-}
-</style>
+  /* hide animation */
+  @keyframes hide {
+    0% {
+      transform: translateX(-489px);
+    }
+    100% {
+      transform: translateX(0px);
+    }
+  }
+  /* show animation */
+  @keyframes show {
+    0% {
+      transform: translateX(489px);
+    }
+    100% {
+      transform: translateX(0px);
+    }
+  }
+  </style>
