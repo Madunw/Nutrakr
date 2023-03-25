@@ -1,0 +1,307 @@
+<!-- Langding page -->
+<template>
+  <div class="welcomepage">
+    <div class="main-area">
+      <!-- welcome headlines and slogans -->
+      <transition name="fade">
+        <div class="box welcome" v-show="showWelcom">
+          <div class="main-headline">
+            <h1 style="font-size: 50px">
+              Tracking Your Intake <br />Calculate Recipe Nutrition
+            </h1>
+          </div>
+          <div class="sub-headline">
+            <h4>Check calories, portions, and macros</h4>
+          </div>
+          <div class="sub-headline">
+            <h4>Simplify your nutrition journey</h4>
+          </div>
+          <div class="sub-headline">
+            <h4>Estimate the number of daily calories your body needs</h4>
+          </div>
+          <div class="sub-headline">
+            <h4>Reach your goals to earn crypto rewards</h4>
+          </div>
+
+          <div class="button-area">
+            <span class="welcom-button"
+              ><div>
+                <el-button type="primary" round @click="connectWallet"
+                  >Connect Wallet</el-button
+                >
+              </div>
+              <div class="hint">
+                Connect metamask wallet wo track your weight
+              </div></span
+            ><span class="welcom-button"
+              ><el-button round @click="continueWithoutWallet"
+                >Continue Without Wallet</el-button
+              ></span
+            >
+          </div>
+        </div>
+      </transition>
+
+      <!-- form to calculate nutrtion needs -->
+      <transition name="fade">
+        <div class="box form" v-show="showForm">
+          <Form></Form>
+        </div>
+      </transition>
+
+      <!-- show form results -->
+      <transition name="fade">
+        <div class="box result" v-show="showResult">
+          <div style="margin: 10px">
+            Your Address : {{ $store.state.userAddress }}
+            <el-button
+              type="primary"
+              round
+              v-show="$store.state.noWallet"
+              @click="reconnect"
+              >Connect Wallet</el-button
+            >
+            <el-button
+              type="primary"
+              round
+              v-show="$store.state.noWallet === false"
+              @click="record(weight, caloriesNeeded, weightGoal)"
+              >Record</el-button
+            >
+          </div>
+
+          <Result></Result>
+
+          <span>
+            <el-button type="primary" round @click="toCalculate"
+              >Calculate Recipe Nutrition</el-button
+            >
+          </span>
+          <span>
+            <el-button round @click="reForm">Re-fill</el-button>
+          </span>
+        </div>
+      </transition>
+    </div>
+  </div>
+</template>
+
+<script>
+import Form from '@/components/form.vue';
+import Result from '@/components/result.vue';
+import { ethers } from 'ethers';
+import { contractAddress, contractABI } from '../../smart_contracts/contract';
+import { mapState } from 'vuex';
+export default {
+  name: 'Welcome',
+  showWelcom: true,
+  data() {
+    return {};
+  },
+  components: {
+    Form,
+    Result,
+  },
+  computed: {
+    ...mapState({
+      caloriesNeeded: 'form/caloriesNeeded',
+      weight: 'form/weight',
+      weightGoal: 'form/weightGoal',
+    }),
+    // to control boxs is displayed
+    showWelcom() {
+      return (
+        this.$store.state.isConnected === false &&
+        this.$store.state.noWallet === false
+      );
+    },
+    showForm() {// to control boxs is displayed
+      return (
+        (this.$store.state.isConnected || this.$store.state.noWallet) &&
+        !this.$store.state.isSubmitted
+      );
+    },
+    showResult() {// to control boxs is displayed
+      return (
+        (this.$store.state.isConnected || this.$store.state.noWallet) &&
+        this.$store.state.isSubmitted
+      );
+    },
+  },
+  methods: {
+    // 重新调出计算表单
+    // Recall the calculation form
+    reForm() {
+      this.$store.state.isSubmitted = false;
+    },
+    // 跳转到calculate页面
+    // Jump to the calculate page
+    toCalculate() {
+      this.$router.push({ path: '/calculator' });
+    },
+    // connect metamsk wallet
+    async connectWallet() {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert('Please install metamask');
+        return;
+      }
+      const [address] = await this.Provider().send('eth_requestAccounts', []);
+      this.$store.state.isConnected = true;
+      this.$store.state.userAddress = address;
+      console.log('metamask connected');
+    },
+    // continue without wallet
+    continueWithoutWallet() {
+      this.$store.state.noWallet = true;
+    },
+    // get contract
+    getContract() {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const ContractCounter = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      return ContractCounter;
+    },
+    // record user info into blockchain
+    async record(weight, caloriesNeeded, weightGoal) {
+      if (this.$store.state.userAddress == '') {
+        console.log('Please connect wallet first');
+        return;
+      }
+      await this.getContract().setUserInfo(weight, caloriesNeeded, weightGoal);
+    },
+    Provider() {
+      return new ethers.providers.Web3Provider(window.ethereum);
+    },
+    // reconnect wallet
+    reconnect() {
+      this.connectWallet();
+      this.$store.state.noWallet = false;
+    },
+  },
+};
+</script>
+
+<style>
+.welcomepage {
+  height: 100%;
+  width: 100%;
+  background-image: url(../assets/background.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right bottom;
+}
+.left-area {
+  float: left;
+  position: relative;
+  width: 60%;
+  height: 70%;
+  /* background-color: aquamarine; */
+}
+.left-area img {
+  margin-top: 50px;
+  width: 60%;
+  height: 100%;
+}
+.main-area {
+  margin-left: 9%;
+  float: left;
+  width: max-content;
+  height: max-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  top: 20%;
+  margin-top: 3%;
+  position: absolute;
+}
+.form {
+  left: 12%;
+}
+.sub-headline {
+  margin: 10px;
+  text-align: justify;
+}
+.main-headline {
+  margin: 30px auto;
+  text-align: justify;
+}
+.button-area {
+  margin: 60px auto;
+}
+.hint {
+  color: rgb(143, 143, 143);
+  font-size: 3px;
+}
+.welcom-button {
+  width: 49%;
+  float: left;
+}
+.result button {
+  margin: 30px;
+}
+.fade-leave-active {
+  -webkit-animation: fade-out 0.5s linear;
+  animation: fade-out 0.5s linear;
+}
+.fade-enter-active {
+  -webkit-animation: fade-in-fwd 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) 0.2s
+    both;
+  animation: fade-in-fwd 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) 0.2s both;
+}
+
+@-webkit-keyframes fade-out {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fade-in-fwd {
+  0% {
+    -webkit-transform: translateZ(-80px);
+    transform: translateZ(-80px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-fwd {
+  0% {
+    -webkit-transform: translateZ(-80px);
+    transform: translateZ(-80px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+</style>

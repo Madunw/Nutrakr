@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../../test"
+		},
+		{
+			"path": "../../../my-wave-portal"
+		},
+		{
+			"path": "../../../intakecalculator"
+		},
+		{
+			"path": "../.."
+		}
+	],
+  "settings": {}
+}
