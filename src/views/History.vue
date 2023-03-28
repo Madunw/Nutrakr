@@ -68,7 +68,6 @@ export default {
     async getUserInfoUpdatedEvents() {
       const filter = this.getContract().filters.UserInfoUpdated();
       const events = await this.getContract().queryFilter(filter);
-      console.log(events);
       this.list = events;
     },
   },

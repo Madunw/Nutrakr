@@ -4,7 +4,7 @@
     <div class="main-area">
       <!-- welcome headlines and slogans -->
       <transition name="fade">
-        <div class="box welcome" v-show="showWelcom">
+        <div class="box welcome" v-show="showWelcome">
           <div class="main-headline">
             <h1 style="font-size: 50px">
               Tracking Your Intake <br />Calculate Recipe Nutrition
@@ -24,7 +24,7 @@
           </div>
 
           <div class="button-area">
-            <span class="welcom-button"
+            <span class="welcome-button"
               ><div>
                 <el-button type="primary" round @click="connectWallet"
                   >Connect Wallet</el-button
@@ -33,7 +33,7 @@
               <div class="hint">
                 Connect metamask wallet wo track your weight
               </div></span
-            ><span class="welcom-button"
+            ><span class="welcome-button"
               ><el-button round @click="continueWithoutWallet"
                 >Continue Without Wallet</el-button
               ></span
@@ -94,7 +94,7 @@ import { contractAddress, contractABI } from '../../smart_contracts/contract';
 import { mapState } from 'vuex';
 export default {
   name: 'Welcome',
-  showWelcom: true,
+  showWelcome: true,
   data() {
     return {};
   },
@@ -109,7 +109,7 @@ export default {
       weightGoal: 'form/weightGoal',
     }),
     // to control boxs is displayed
-    showWelcom() {
+    showWelcome() {
       return (
         this.$store.state.isConnected === false &&
         this.$store.state.noWallet === false
@@ -239,7 +239,7 @@ export default {
   color: rgb(143, 143, 143);
   font-size: 3px;
 }
-.welcom-button {
+.welcome-button {
   width: 49%;
   float: left;
 }

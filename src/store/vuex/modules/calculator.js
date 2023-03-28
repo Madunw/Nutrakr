@@ -1,8 +1,9 @@
 import foods from '@/store/foods.json';
 const state = {
-  list: [], //存放在search中被选择的数据
+  list: [], // list for selected items form component-'search'
 };
 const getters = {
+  // compute list value by num
   sumENERC_KCAL(state) {
     let sumENERC_KCAL = state.list
       .map((row) => (row.ENERC_KCAL * row.num) / 100)

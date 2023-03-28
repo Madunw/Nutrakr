@@ -1,13 +1,13 @@
 // here is vuex data
 
-import form from './modules/form';
+import form from './/modules/form';
 import calculator from './modules/calculator';
 import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    isConnected: false, //判断是否连接钱包
-    isSubmitted: false, //判断是否提交
+    isConnected: false, // MetaMaskの接続状態
+    isSubmitted: false, // フォームの送信状態
     userAddress: '', //MetaMask Address
     noWallet: false, //use without wallet
   },

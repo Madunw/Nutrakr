@@ -60,7 +60,6 @@ export default {
     }
 
     // 在页面刷新时将vuex里的信息保存到sessionStorage里     Save the information in vuex to sessionStorage when the page is refreshed
-    // beforeunload事件在页面刷新时先触发       The beforeunload event is triggered first when the page is refreshed
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state));
     });

@@ -4,7 +4,6 @@
     <el-select
       v-model="name"
       filterable
-      v-loading="loading"
       placeholder="食品名を入力してください"
       style="width: 60%"
     >
@@ -45,15 +44,21 @@ export default {
   name: 'Search',
   data() {
     return {
-      // 营养值数据库 from nutrition database
-      foods: foods,
+      // show 'Loading...' before foods data loaded
+      foods: [{'name': 'Loading...'}],
     };
   },
   computed: {
-    ...mapState({ list: (state) => state.calculator.list }), // 映射 mapping
+    ...mapState({ list: (state) => state.calculator.list }), // get list from store
   },
   methods: {
-    ...mapMutations(['addToList']),
+    ...mapMutations(['addToList']), // get addToList method from store
+  },
+  mounted() {
+    // load data from foods.json
+    setTimeout(() => {
+      this.foods = foods;
+    }, 2000)
   },
 };
 </script>

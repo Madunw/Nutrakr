@@ -1,7 +1,11 @@
 <!-- calculate page -->
 <template>
   <div class="calculate-page">
+
+    <!-- table on the left side -->
     <span class="table"><Search></Search><Table></Table></span>
+
+    <!-- charts on the right side -->
     <span class="side">
       <div class="chartMacronutrients">
         <div class="chartMacronutrient">
@@ -70,9 +74,10 @@ export default {
     };
   },
   name: 'Calculator',
+  //Get data from store
   computed: {
-    ...mapState({ caloriesNeeded: (state) => state.form.caloriesNeeded }),
-    ...mapGetters([
+    ...mapState({ caloriesNeeded: (state) => state.form.caloriesNeeded }), //Get caloriesNeeded from store
+    ...mapGetters([ //Get data from store
       'ProteinNeeded',
       'CarbNeeded',
       'FatNeeded',
@@ -100,9 +105,9 @@ export default {
     },
     // Get the contract instance
     getContract() {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum); 
       const signer = provider.getSigner();
-      const ContractCounter = new ethers.Contract(
+      const ContractCounter = new ethers.Contract( 
         contractAddress,
         contractABI,
         signer
@@ -113,6 +118,7 @@ export default {
     async getUserInfoUpdatedEvents() {
       const filter = this.getContract().filters.UserInfoUpdated();
       const events = await this.getContract().queryFilter(filter);
+      // load the last caloriesNeed form the contract
       this.caloriesNeed = events.slice(-1)[0].args[2];
     },
   },
