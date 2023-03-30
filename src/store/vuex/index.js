@@ -2,6 +2,7 @@
 
 import form from './/modules/form';
 import calculator from './modules/calculator';
+import welcome from './modules/welcome'
 import { createStore } from 'vuex';
 
 export default createStore({
@@ -14,5 +15,6 @@ export default createStore({
   modules: {
     form,
     calculator,
+    welcome,
   },
 });

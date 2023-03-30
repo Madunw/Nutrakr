@@ -95,10 +95,10 @@ export default {
   name: 'Welcome',
   data() {
     return {
-      showWelcome: true,
-      showForm: false,
-      showResult: false,
-      isConnected: false,
+      // showWelcome: true,
+      // showForm: false,
+      // showResult: false,
+      // isConnected: false,
     };
   },
   components: {
@@ -110,19 +110,23 @@ export default {
       caloriesNeeded: (state) => state.form.caloriesNeeded,
       weight: (state) => state.form.weight,
       weightGoal: (state) => state.form.weightGoal,
+      showWelcome: (state) => state.welcome.showWelcome,
+      showForm: (state) => state.welcome.showForm,
+      showResult: (state) => state.welcome.showResult,
+      isConnected: (state) => state.welcome.isConnected,
     }), //Get data from vuex store
   },
   methods: {
     // 提交表单
     Submit(status) {
-      this.showResult = status;
-      this.showForm = false;
+      this.$store.state.welcome.showResult = status;
+      this.$store.state.welcome.showForm = false;
     },
     // 重新调出计算表单
     // Recall the calculation form
     reForm() {
-      this.showResult = false; // hide result box
-      this.showForm = true; // show form box
+      this.$store.state.welcome.showResult = false; // hide result box
+      this.$store.state.welcome.showForm = true; // show form box
     },
     // 跳转到calculate页面
     // Jump to the calculate page
@@ -139,17 +143,12 @@ export default {
       const [address] = await this.Provider().send('eth_requestAccounts', []);
       this.$store.state.userAddress = address; // set user address
       console.log('metamask connected');
-      this.showWelcome = false; // hide welcome box
+      this.$store.state.welcome.showWelcome = false; // hide welcome box
     },
     // continue without wallet
     continueWithoutWallet() {
-      this.showWelcome = false; // hide welcome box
-      this.showForm = true; // show form box
-    },
-    // reconnect wallet
-    reconnect() {
-      this.connectWallet();
-      // this.isConnected = true;
+      this.$store.state.welcome.showWelcome = false; // hide welcome box
+      this.$store.state.welcome.showForm = true; // show form box
     },
     // get contract
     getContract() {
