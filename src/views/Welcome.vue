@@ -45,7 +45,7 @@
       <!-- form to calculate nutrtion needs -->
       <transition name="fade">
         <div class="box form" v-show="showForm">
-          <Form></Form>
+          <Form v-on:isSubmitted="Submit"></Form>
         </div>
       </transition>
 
@@ -54,17 +54,16 @@
         <div class="box result" v-show="showResult">
           <div style="margin: 10px">
             Your Address : {{ $store.state.userAddress }}
-            <el-button
-              type="primary"
-              round
-              v-show="$store.state.noWallet"
-              @click="reconnect"
-              >Connect Wallet</el-button
+            <span
+              ><el-button type="primary" round @click="connectWallet"
+                >Connect Wallet</el-button
+              ></span
             >
+
             <el-button
               type="primary"
               round
-              v-show="$store.state.noWallet === false"
+              v-show="isConnected"
               @click="record(weight, caloriesNeeded, weightGoal)"
               >Record</el-button
             >
@@ -94,9 +93,13 @@ import { contractAddress, contractABI } from '../../smart_contracts/contract';
 import { mapState } from 'vuex';
 export default {
   name: 'Welcome',
-  showWelcome: true,
   data() {
-    return {};
+    return {
+      showWelcome: true,
+      showForm: false,
+      showResult: false,
+      isConnected: false,
+    };
   },
   components: {
     Form,
@@ -104,35 +107,22 @@ export default {
   },
   computed: {
     ...mapState({
-      caloriesNeeded: 'form/caloriesNeeded',
-      weight: 'form/weight',
-      weightGoal: 'form/weightGoal',
-    }),
-    // to control boxs is displayed
-    showWelcome() {
-      return (
-        this.$store.state.isConnected === false &&
-        this.$store.state.noWallet === false
-      );
-    },
-    showForm() {// to control boxs is displayed
-      return (
-        (this.$store.state.isConnected || this.$store.state.noWallet) &&
-        !this.$store.state.isSubmitted
-      );
-    },
-    showResult() {// to control boxs is displayed
-      return (
-        (this.$store.state.isConnected || this.$store.state.noWallet) &&
-        this.$store.state.isSubmitted
-      );
-    },
+      caloriesNeeded: (state) => state.form.caloriesNeeded,
+      weight: (state) => state.form.weight,
+      weightGoal: (state) => state.form.weightGoal,
+    }), //Get data from vuex store
   },
   methods: {
+    // 提交表单
+    Submit(status) {
+      this.showResult = status;
+      this.showForm = false;
+    },
     // 重新调出计算表单
     // Recall the calculation form
     reForm() {
-      this.$store.state.isSubmitted = false;
+      this.showResult = false; // hide result box
+      this.showForm = true; // show form box
     },
     // 跳转到calculate页面
     // Jump to the calculate page
@@ -147,13 +137,19 @@ export default {
         return;
       }
       const [address] = await this.Provider().send('eth_requestAccounts', []);
-      this.$store.state.isConnected = true;
-      this.$store.state.userAddress = address;
+      this.$store.state.userAddress = address; // set user address
       console.log('metamask connected');
+      this.showWelcome = false; // hide welcome box
     },
     // continue without wallet
     continueWithoutWallet() {
-      this.$store.state.noWallet = true;
+      this.showWelcome = false; // hide welcome box
+      this.showForm = true; // show form box
+    },
+    // reconnect wallet
+    reconnect() {
+      this.connectWallet();
+      // this.isConnected = true;
     },
     // get contract
     getContract() {
@@ -176,11 +172,6 @@ export default {
     },
     Provider() {
       return new ethers.providers.Web3Provider(window.ethereum);
-    },
-    // reconnect wallet
-    reconnect() {
-      this.connectWallet();
-      this.$store.state.noWallet = false;
     },
   },
 };

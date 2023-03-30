@@ -51,20 +51,22 @@ import { mapState, mapGetters, mapMudules, mapMutations } from 'vuex';
 export default {
   name: 'Result',
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapState({
-      caloriesNeeded: 'form.caloriesNeeded',
-      weightGoal: 'form.weightGoal',
-    }),
+      caloriesNeeded: (state) => state.form.caloriesNeeded,
+      weightGoal: (state) => state.form.weightGoal,
+    }), //Get data from vuex store
     ...mapGetters(['ProteinNeeded', 'CarbNeeded', 'FatNeeded']),
     // not show when weightgoal is 0
-    gainOrLoose: function() {
-  return this.weightGoal > 0 ? 'Gain' : this.weightGoal < 0 ? 'Loose' : 'notShow';
-},
-
+    gainOrLoose: function () {
+      return this.weightGoal > 0
+        ? 'Gain'
+        : this.weightGoal < 0
+        ? 'Loose'
+        : 'notShow';
+    },
   },
 };
 </script>

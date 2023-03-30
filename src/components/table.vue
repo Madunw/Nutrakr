@@ -3,7 +3,6 @@
   <el-table
     :data="list"
     stripe
-    v-loading="loading"
     style="width: 100%"
     show-summary
     :summary-method="getSummaries"
@@ -236,7 +235,7 @@ export default {
       const sums = []; // 返回的数据
       columns.forEach((column, index) => {
         if (index === 1) {
-          // 第2列 返回'合計' Column 2 
+          // 第2列 返回'合計' Column 2
           sums[index] = '合計';
           return;
         } else if (index === 2) {

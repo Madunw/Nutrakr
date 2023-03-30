@@ -6,10 +6,7 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    isConnected: false, // MetaMaskの接続状態
-    isSubmitted: false, // フォームの送信状態
     userAddress: '', //MetaMask Address
-    noWallet: false, //use without wallet
   },
   mutations: {},
   getters: {},

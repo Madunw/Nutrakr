@@ -2,7 +2,6 @@
 <template>
   <div class="search">
     <el-select
-      v-model="name"
       filterable
       placeholder="食品名を入力してください"
       style="width: 60%"

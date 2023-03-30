@@ -224,12 +224,12 @@ export default {
           this.caloriesNeeded = this.caloriePerDayCalculate(
             this.ruleForm.gender
           );
-          this.$store.state.isSubmitted = true; //更改vuex中的isSubmitted为true
           this.$store.state.form.caloriesNeeded = this.caloriesNeeded; // 把caloriePerDay传给vuex的方法getCaloriesNeeded
           this.$store.state.form.weight = this.ruleForm.weight; // 把weight传给vuex的方法getWeight
           this.$store.state.form.weightGoal = this.ruleForm.weightGoal; // 把weightGoal传给vuex的方法getWeightGoal
         }
       });
+      this.$emit('isSubmitted', true); // 把isSubmitted传给父组件
     },
     // 重置form
     resetForm(formName) {

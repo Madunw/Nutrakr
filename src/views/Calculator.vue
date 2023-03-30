@@ -58,6 +58,8 @@
 <script>
 import Search from '@/components/search.vue';
 import Table from '@/components//table.vue';
+import { ethers } from 'ethers';
+import { contractAddress, contractABI } from '../../smart_contracts/contract';
 import ChartMacronutrients from '@/components/chart-macronutrients.vue';
 import { mapState, mapGetters } from 'vuex';
 export default {
