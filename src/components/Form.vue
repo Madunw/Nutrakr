@@ -62,14 +62,9 @@
       </div>
     </el-form-item>
 
-    <el-form-item label="28日間の体重の増減目標(kg)" prop="weightGoal">
+    <el-form-item label="目標体重(kg)" prop="goalWeight">
       <div class="form-item">
-        <el-input-number
-          v-model.number="ruleForm.weightGoal"
-          controls-position="right"
-          :min="-10"
-          :max="10"
-        ></el-input-number>
+        <el-input v-model.number="ruleForm.goalWeight"></el-input>
       </div>
     </el-form-item>
 
@@ -139,22 +134,15 @@ export default {
         }
       });
     };
-    // validate if weightGoal-input is 'empty','halfwidth-number','range:Weight+-10'
-    var weightWeightGoal = (rule, value, callback) => {
+    // validate if GoalWeight-input is 'empty','halfwidth-number'
+    var validateGoalWeight = (rule, value, callback) => {
       setTimeout(() => {
         if (!Number.isInteger(value)) {
           callback(new Error('半角数字で入力してください'));
         } else {
-          if ((value < -10) | (value > 10)) {
-            callback(
-              new Error(
-                '体重が増減することは健康を害する可能性があるため、-10kg~10kgの範囲で入力してください'
-              )
-            );
-          } else {
             callback();
           }
-        }
+        
       });
     };
     return {
@@ -167,7 +155,7 @@ export default {
         weight: 0,
         age: 0,
         active: '',
-        weightGoal: 0,
+        goalWeight: 0,
       },
       // 表单规则 Form rules
       rules: {
@@ -188,7 +176,7 @@ export default {
             trigger: 'change',
           },
         ],
-        weightGoal: [{ validator: weightWeightGoal, trigger: 'blur' }],
+        goalWeight: [{ validator: validateGoalWeight, trigger: 'blur' }],
       },
     };
   },
@@ -226,12 +214,12 @@ export default {
           );
           this.$store.state.form.caloriesNeeded = this.caloriesNeeded; // 把caloriePerDay传给vuex的方法getCaloriesNeeded
           this.$store.state.form.weight = this.ruleForm.weight; // 把weight传给vuex的方法getWeight
-          this.$store.state.form.weightGoal = this.ruleForm.weightGoal; // 把weightGoal传给vuex的方法getWeightGoal
+          this.$store.state.form.goalWeight = this.ruleForm.goalWeight; // 把weightGoal传给vuex的方法getWeightGoal
         }
       });
       this.$emit('isSubmitted', true); // 把isSubmitted传给父组件
     },
-    // 重置form
+    // reset form
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -244,15 +232,15 @@ export default {
       }
       if (this.ruleForm.active == 'low') {
         return Math.round(
-          this.bmr * 1.5 + (this.ruleForm.weightGoal * 7700) / 28
+          this.bmr * 1.5 + ((this.ruleForm.goalWeight-this.ruleForm.weight) * 7700) / 28
         );
       } else if (this.ruleForm.active == 'medium') {
         return Math.round(
-          this.bmr * 1.75 + (this.ruleForm.weightGoal * 7700) / 28
+          this.bmr * 1.75 + ((this.ruleForm.goalWeight-this.ruleForm.weight) * 7700) / 28
         );
       } else if (this.ruleForm.active == 'high') {
         return Math.round(
-          this.bmr * 2 + (this.ruleForm.weightGoal * 7700) / 28
+          this.bmr * 2 + ((this.ruleForm.goalWeight-this.ruleForm.weight) * 7700) / 28
         );
       }
     },

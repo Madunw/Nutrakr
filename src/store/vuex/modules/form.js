@@ -1,7 +1,7 @@
 const state={
   caloriesNeeded: 0,
   weight: 0,
-  weightGoal: 0,
+  goalWeight: 0,
 }
 const getters={
   ProteinNeeded(state) {
@@ -25,8 +25,8 @@ const mutations={
   getWeight(state, weight ) {
     state.weight = weight
   },
-  getWeightGoal(state, weightGoal ) {
-    state.weightGoal = weightGoal
+  getGoalWeight(state, goalWeight ) {
+    state.goalWeight = goalWeight
   },
 }
 

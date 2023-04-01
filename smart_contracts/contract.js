@@ -89,6 +89,6 @@ const contractABI = [
 	}
 ]
 
-const contractAddress = "0x69241eC75EC9E36b6fD26cE62d03393fC9f587Ec"
+const contractAddress = "0xf81b5f871dd1656a27f87700B222E68b60a92729"
 
 export {contractABI, contractAddress}

@@ -184,4 +184,15 @@ export default {
     opacity: 1;
   }
 }
+@media screen and (orientation: portrait) {
+  .table {
+    height: auto;
+    float:none;
+}
+.side {
+  height: auto;
+  width: auto;
+  float:none;
+}
+}
 </style>

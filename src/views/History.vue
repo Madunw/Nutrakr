@@ -22,6 +22,7 @@
           {{ timestampToTime(props.row.args[4]) }}</template
         >
       </el-table-column>
+
     </el-table>
   </div>
 </template>
@@ -53,6 +54,7 @@ export default {
         .toString()
         .padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     },
+
     // Get the contract instance
     getContract() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -64,12 +66,19 @@ export default {
       );
       return ContractCounter;
     },
+
     // Get UserInfoUpdated events and update the list for table data
     async getUserInfoUpdatedEvents() {
       const filter = this.getContract().filters.UserInfoUpdated();
       const events = await this.getContract().queryFilter(filter);
       this.list = events;
     },
+    
+    // cpomute the time difference between the current time and the timestamp
+    timeCompute(timestamp){
+      let timestampCurrent = Date.parse(new Date()) / 1000;//get current time
+      return timestampCurrent - timestamp;
+    }
   },
 };
 </script>

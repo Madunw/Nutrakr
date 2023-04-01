@@ -20,13 +20,13 @@
             <h4>Estimate the number of daily calories your body needs</h4>
           </div>
           <div class="sub-headline">
-            <h4>Reach your goals to earn crypto rewards</h4>
+            <h4>Reach your goal to earn crypto rewards</h4>
           </div>
 
           <div class="button-area">
             <span class="welcome-button"
               ><div>
-                <el-button type="primary" round @click="connectWallet"
+                <el-button type="primary" round @click="connect"
                   >Connect Wallet</el-button
                 >
               </div>
@@ -34,8 +34,8 @@
                 Connect metamask wallet wo track your weight
               </div></span
             ><span class="welcome-button"
-              ><el-button round @click="continueWithoutWallet"
-                >Continue Without Wallet</el-button
+              ><el-button type="primary" round plain @click="continueWithoutWallet"
+                >Continue</el-button
               ></span
             >
           </div>
@@ -54,17 +54,16 @@
         <div class="box result" v-show="showResult">
           <div style="margin: 10px">
             Your Address : {{ $store.state.userAddress }}
-            <span
-              ><el-button type="primary" round @click="connectWallet"
+            <span v-show="!isConnected"
+              ><el-button type="primary" round @click="reconnect"
                 >Connect Wallet</el-button
               ></span
             >
-
             <el-button
               type="primary"
               round
               v-show="isConnected"
-              @click="record(weight, caloriesNeeded, weightGoal)"
+              @click="record(weight, caloriesNeeded, goalWeight)"
               >Record</el-button
             >
           </div>
@@ -109,7 +108,7 @@ export default {
     ...mapState({
       caloriesNeeded: (state) => state.form.caloriesNeeded,
       weight: (state) => state.form.weight,
-      weightGoal: (state) => state.form.weightGoal,
+      goalWeight: (state) => state.form.goalWeight,
       showWelcome: (state) => state.welcome.showWelcome,
       showForm: (state) => state.welcome.showForm,
       showResult: (state) => state.welcome.showResult,
@@ -143,7 +142,15 @@ export default {
       const [address] = await this.Provider().send('eth_requestAccounts', []);
       this.$store.state.userAddress = address; // set user address
       console.log('metamask connected');
+      this.$store.state.welcome.isConnected = true;
+    },
+    connect(){
+      this.connectWallet();
       this.$store.state.welcome.showWelcome = false; // hide welcome box
+      this.$store.state.welcome.showForm = true; // show form box
+    },
+    reconnect(){
+      this.connectWallet();
     },
     // continue without wallet
     continueWithoutWallet() {
@@ -162,12 +169,12 @@ export default {
       return ContractCounter;
     },
     // record user info into blockchain
-    async record(weight, caloriesNeeded, weightGoal) {
+    async record(weight, caloriesNeeded, goalWeight) {
       if (this.$store.state.userAddress == '') {
         console.log('Please connect wallet first');
         return;
       }
-      await this.getContract().setUserInfo(weight, caloriesNeeded, weightGoal);
+      await this.getContract().setUserInfo(weight, caloriesNeeded, goalWeight);
     },
     Provider() {
       return new ethers.providers.Web3Provider(window.ethereum);
@@ -211,16 +218,16 @@ export default {
   margin-top: 3%;
   position: absolute;
 }
-.form {
-  left: 12%;
+.main-headline {
+  margin: 30px auto;
+  text-align: justify;
+  color: rgb(48, 49, 65);
 }
 .sub-headline {
   margin: 10px;
   text-align: justify;
-}
-.main-headline {
-  margin: 30px auto;
-  text-align: justify;
+  color: rgb(91, 103, 117);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .button-area {
   margin: 60px auto;
@@ -232,6 +239,12 @@ export default {
 .welcome-button {
   width: 49%;
   float: left;
+}
+.form {
+  left: 12%;
+}
+.result {
+  width: 42rem;
 }
 .result button {
   margin: 30px;

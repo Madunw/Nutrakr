@@ -1,7 +1,7 @@
 <!-- Result component to show nutrition needs result -->
 <template>
-  <div v-show="weightGoal != 0">
-    To {{ gainOrLoose }}{{ weightGoal }} kg In 28 Days, You Need :
+  <div v-show="goalWeight != 0">
+    To reach your goal weight In 28 Days, You need :
   </div>
   <el-card class="box-card">
     <span class="items">
@@ -56,17 +56,9 @@ export default {
   computed: {
     ...mapState({
       caloriesNeeded: (state) => state.form.caloriesNeeded,
-      weightGoal: (state) => state.form.weightGoal,
+      goalWeight: (state) => state.form.goalWeight,
     }), //Get data from vuex store
     ...mapGetters(['ProteinNeeded', 'CarbNeeded', 'FatNeeded']),
-    // not show when weightgoal is 0
-    gainOrLoose: function () {
-      return this.weightGoal > 0
-        ? 'Gain'
-        : this.weightGoal < 0
-        ? 'Loose'
-        : 'notShow';
-    },
   },
 };
 </script>

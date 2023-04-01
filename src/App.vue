@@ -1,7 +1,7 @@
 <template>
   <!-- header -->
   <el-header id="page-header">
-    <img src="./assets/logo.png" alt="logo" class="logo" />
+    <router-link to="/"><img src="./assets/logo.png" alt="logo" class="logo" /></router-link>
     <!-- navigation -->
     <nav class="navigation">
       <li>
@@ -75,8 +75,7 @@ export default {
 
 #app {
   height: 100%;
-  font-family: 'Snell Roundhand, cursive';
-  color: #13172e;
+  /* font-family: 'Snell Roundhand, cursive'; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -116,8 +115,14 @@ export default {
 .router-link {
   font-size: 22px;
   text-decoration: none;
-  color: rgb(8, 16, 41);
+  color: rgb(48, 54, 75);
   font-weight: bold;
+  box-shadow: rgba(0, 0, 0, .2) 2px 8px 8px -5px;
+  transform: translate3d(0, 2px, 0);
+}
+.router-link:hover {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+  transform: translate3d(0, 2px, 0);
 }
 #main {
   height: calc(100% - 70px);
