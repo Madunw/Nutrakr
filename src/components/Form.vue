@@ -79,7 +79,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { contractAddress, contractABI } from '../../smart_contracts/contract';
+import { userinformationAddress, userinformationABI } from '../../smart_contracts/contract';
 export default {
   name: 'Form',
   data() {

@@ -52,8 +52,8 @@
       <!-- show form results -->
       <transition name="fade">
         <div class="box result" v-show="showResult">
-          <div style="margin: 10px">
-            Your Address : {{ $store.state.userAddress }}
+          <div>
+            <strong>Your Address : </strong>{{ $store.state.userAddress }}
             <span v-show="!isConnected"
               ><el-button type="primary" round @click="reconnect"
                 >Connect Wallet</el-button
@@ -63,10 +63,12 @@
               type="primary"
               round
               v-show="isConnected"
-              @click="record(weight, caloriesNeeded, goalWeight)"
+              @click="record(weight, caloriesNeeded)"
               >Record</el-button
             >
           </div>
+          
+          
 
           <Result></Result>
 
@@ -78,6 +80,8 @@
           <span>
             <el-button round @click="reForm">Re-fill</el-button>
           </span>
+          <transition name="fade">
+          <div  v-if="isConnected"><Challenge></Challenge></div></transition>
         </div>
       </transition>
     </div>
@@ -87,8 +91,9 @@
 <script>
 import Form from '@/components/form.vue';
 import Result from '@/components/result.vue';
+import Challenge from '@/components/challenge.vue';
 import { ethers } from 'ethers';
-import { contractAddress, contractABI } from '../../smart_contracts/contract';
+import { userInfoAddressABI, userInfoAddressAddress } from '../../smart_contracts/contract';
 import { mapState } from 'vuex';
 export default {
   name: 'Welcome',
@@ -103,6 +108,7 @@ export default {
   components: {
     Form,
     Result,
+    Challenge,
   },
   computed: {
     ...mapState({
@@ -136,12 +142,17 @@ export default {
     async connectWallet() {
       const { ethereum } = window;
       if (!ethereum) {
-        alert('Please install metamask');
+        this.$notify.info({
+          message: 'Please install metamask'
+        });
         return;
       }
       const [address] = await this.Provider().send('eth_requestAccounts', []);
       this.$store.state.userAddress = address; // set user address
-      console.log('metamask connected');
+      this.$notify({
+          message: 'metamask connected',
+          type: 'success'
+        });
       this.$store.state.welcome.isConnected = true;
     },
     connect(){
@@ -157,28 +168,31 @@ export default {
       this.$store.state.welcome.showWelcome = false; // hide welcome box
       this.$store.state.welcome.showForm = true; // show form box
     },
-    // get contract
-    getContract() {
+    Provider() {
+      return new ethers.providers.Web3Provider(window.ethereum);
+    },
+    // get UserInfo contract
+    getUserInfoContract() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const ContractCounter = new ethers.Contract(
-        contractAddress,
-        contractABI,
+        userInfoAddress,
+        userInfoABI,
         signer
       );
       return ContractCounter;
     },
-    // record user info into blockchain
-    async record(weight, caloriesNeeded, goalWeight) {
+    // record user info into UserInfo Contract
+    async record(weight, caloriesNeeded) {
       if (this.$store.state.userAddress == '') {
-        console.log('Please connect wallet first');
+        this.$notify.info({
+          message: 'Please connect wallet first'
+        });
         return;
       }
-      await this.getContract().setUserInfo(weight, caloriesNeeded, goalWeight);
+      await this.getUserInfoContract().setUserInfo(weight, caloriesNeeded);
     },
-    Provider() {
-      return new ethers.providers.Web3Provider(window.ethereum);
-    },
+    
   },
 };
 </script>
@@ -245,6 +259,7 @@ export default {
 }
 .result {
   width: 42rem;
+  text-align: left;
 }
 .result button {
   margin: 30px;

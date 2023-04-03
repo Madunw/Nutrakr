@@ -59,7 +59,7 @@
 import Search from '@/components/search.vue';
 import Table from '@/components//table.vue';
 import { ethers } from 'ethers';
-import { contractAddress, contractABI } from '../../smart_contracts/contract';
+import { userinformationAddress, userinformationABI } from '../../smart_contracts/contract';
 import ChartMacronutrients from '@/components/chart-macronutrients.vue';
 import { mapState, mapGetters } from 'vuex';
 export default {
@@ -110,8 +110,8 @@ export default {
       const provider = new ethers.providers.Web3Provider(window.ethereum); 
       const signer = provider.getSigner();
       const ContractCounter = new ethers.Contract( 
-        contractAddress,
-        contractABI,
+        userinformationAddress,
+        userinformationABI,
         signer
       );
       return ContractCounter;

@@ -5,21 +5,18 @@
     <el-table :data="list" style="width: 100%">
       <el-table-column label="Wallet Address"
         ><template #default="props">
-          {{ props.row.args[0] }}</template
+          {{ props.row.address }}</template
         ></el-table-column
       >
       <el-table-column label="Weight">
-        <template #default="props"> {{ props.row.args[1] }} kg</template>
+        <template #default="props"> {{ props.row.args.weight }} kg</template>
       </el-table-column>
       <el-table-column label="Calories Needed Per Day">
-        <template #default="props"> {{ props.row.args[2] }} kcal</template>
-      </el-table-column>
-      <el-table-column label="Goal">
-        <template #default="props"> {{ props.row.args[3] }} kg</template>
+        <template #default="props"> {{ props.row.args.calorieNeed }} kcal</template>
       </el-table-column>
       <el-table-column label="Time">
         <template #default="props">
-          {{ timestampToTime(props.row.args[4]) }}</template
+          {{ timestampToTime(props.row.args.timestamp) }}</template
         >
       </el-table-column>
 
@@ -28,7 +25,7 @@
 </template>
 <script>
 import { ethers } from 'ethers';
-import { contractAddress, contractABI } from '../../smart_contracts/contract';
+import { userInfoAddress, userInfoABI } from '../../smart_contracts/contract';
 export default {
   data() {
     return {
@@ -60,8 +57,8 @@ export default {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const ContractCounter = new ethers.Contract(
-        contractAddress,
-        contractABI,
+        userInfoAddress,
+        userInfoABI,
         signer
       );
       return ContractCounter;
@@ -71,6 +68,7 @@ export default {
     async getUserInfoUpdatedEvents() {
       const filter = this.getContract().filters.UserInfoUpdated();
       const events = await this.getContract().queryFilter(filter);
+      console.log(events)
       this.list = events;
     },
     
