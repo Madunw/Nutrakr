@@ -1,6 +1,6 @@
 <!-- calculate page -->
 <template>
-  <div class="calculate-page">
+  <div id="calculate-page">
 
     <!-- table on the left side -->
     <span class="table"><Search></Search><Table></Table></span>
@@ -130,17 +130,20 @@ export default {
 #calculate-page {
   -webkit-animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  display: flex;
 }
 .table {
-  width: 70%;
-  float: left;
+  display: block;
+  width: calc(99% - 410px);
   margin-top: 120px;
 }
 .side {
-  width: 30%;
+  display: block;
+  /* width最小为400px */
+  width: 410px;
   height: 100%;
-  float: right;
-  margin-top: 30px;
+  margin: 30px auto;
+  
 }
 .chartMacronutrients {
   width: 100%;
@@ -148,15 +151,15 @@ export default {
   text-align: center;
 }
 .chartMacronutrient {
-  width: 450px;
-  height: 400px;
+  /* width: 450px;
+  height: 400px; */
   margin: auto;
 }
 .progress-bars {
   text-align: left;
 }
 .progress-bar {
-  width: 400px;
+  width: 20rem;
   margin: 15px auto;
 }
 
@@ -194,5 +197,24 @@ export default {
   width: auto;
   float:none;
 }
+}
+
+@media screen and (max-width: 1440px) {
+  #calculate-page {
+    /* flex-direction: row; */
+    display: block;
+  }
+
+  .table {
+    width: 100%;
+    margin-top: 1.5rem;
+    font-size: 3px;
+  }
+  .el-table{
+    font-size: 0.5rem;
+  }
+  .side {
+    height: 100%;
+  }
 }
 </style>

@@ -15,7 +15,7 @@
       </li>
     </nav>
   </el-header>
-  <!-- main contents area -->
+  <!-- wave header -->
   <div class="waveHeader">
     <svg
       data-name="Layer 1"
@@ -29,7 +29,7 @@
       ></path>
     </svg>
   </div>
-
+<!-- main contents area -->
   <el-main id="main"><router-view /></el-main>
 </template>
 
@@ -105,8 +105,8 @@ export default {
 }
 
 #page-header {
+  padding-top: 2rem;
   display: flex;
-  align-items: flex-end;
   position: relative;
   height: 70px;
   z-index: 1;
@@ -163,5 +163,18 @@ export default {
 
 .waveHeader .shape-fill {
   fill: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  #page-header {
+    height: 10rem;
+    display: flex;
+        flex-direction: column;
+        flex-wrap: wrap-reverse;
+  }
+  .navigation li {
+    margin-top: 0.5rem;
+    display:flex;
+  }
 }
 </style>

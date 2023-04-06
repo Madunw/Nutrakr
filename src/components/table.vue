@@ -7,7 +7,7 @@
     show-summary
     :summary-method="getSummaries"
   >
-    <el-table-column :align="right" label=" " width="60">
+    <el-table-column :align="right" label=" " width="60" fixed>
       <template #default="scope">
         <!-- 从list中移除 delete from the list in vuex -->
         <el-button circle @click="handleDelete(scope.$index)"
@@ -48,8 +48,8 @@
         <template #default="props">
           {{ getValue(props.row.NACL_EQ, props.row.num) }}&nbsp;g</template
         >
-        <!-- 微量元素 Micronutrients -->
       </el-table-column>
+ <!-- 微量元素 Micronutrients -->
       <el-table-column type="expand" label="..." :align="center">
         <template #default="props">
           <table id="micronutrients">
@@ -65,7 +65,7 @@
       </el-table-column>
     </el-table-column>
 
-    <el-table-column label="グラム">
+    <el-table-column label="グラム" fixed="right">
       <template #default="props">
         <el-input-number
           v-model="props.row.num"
@@ -74,7 +74,7 @@
           :step="50"
           size="small"
           controls-position="right"
-        />&nbsp;&nbsp;g
+        />
       </template>
     </el-table-column>
   </el-table>

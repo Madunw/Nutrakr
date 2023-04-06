@@ -56,6 +56,14 @@ export default {
       tooltip: {
         trigger: 'item',
       },
+      grid: {
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
+        width: "220px",
+        height: "280px",
+        containLabel: true},
+
       legend: {
         top: '5%',
         left: 'center',
@@ -63,7 +71,7 @@ export default {
       series: {
         name: 'Macronutrients',
         type: 'pie',
-        radius: ['40%', '70%'],
+        radius: ['30%', '50%'],
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
@@ -88,5 +96,6 @@ export default {
 <style scoped>
 .chart {
   height: 400px;
+  width: 400px;
 }
 </style>

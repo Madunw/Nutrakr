@@ -2,7 +2,7 @@
 A blockchain health management app to helps users achieve their nutrition and weight management goals through three key features: calculating daily nutrient requirements, analyzing nutrient content of food, and offering weight management challenges.  I have issued a cryptocurrency a crypto token(SoulBound) reward system to incentivize successful challengers.
  with a crypto token reward system.
 
-Deployed in the Goerli testnet.  
+Network: Goerli testnet.  
 website: [www.nutrakr.com](http://www.nutrakr.com/)
 ## Functions
 * Calculate nutrient requirements per day.  
