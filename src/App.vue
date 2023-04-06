@@ -1,24 +1,16 @@
 <template>
   <!-- header -->
   <el-header id="page-header">
-    <router-link to="/"><img src="./assets/logo.png" alt="logo" class="logo" /></router-link>
+    <router-link to="/"
+      ><img src="./assets/logo.png" alt="logo" class="logo"
+    /></router-link>
     <!-- navigation -->
     <nav class="navigation">
-      <li>
-        <span><router-link to="/" class="router-link">Home</router-link></span>
-      </li>
-      <li>
+      <li v-for="router in routers" :key="router.id">
         <span
-          ><router-link to="/calculator" class="router-link"
-            >Calculator</router-link
-          ></span
-        >
-      </li>
-      <li>
-        <span
-          ><router-link to="/history" class="router-link"
-            >History</router-link
-          ></span
+          ><router-link :to="router.path" class="router-link">{{
+            router.title
+          }}</router-link></span
         >
       </li>
     </nav>
@@ -43,10 +35,34 @@
 
 <script>
 import { ethers } from 'ethers';
-import { userinformationAddress, userinformationABI } from '../smart_contracts/contract';
+import {
+  userinformationAddress,
+  userinformationABI,
+} from '../smart_contracts/contract';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      routers: [
+        {
+          id: 1,
+          title: 'Home',
+          path: '/',
+        },
+        {
+          id: 2,
+          title: 'Calculator',
+          path: '/calculator',
+        },
+        {
+          id: 3,
+          title: 'History',
+          path: '/history',
+        },
+      ],
+    };
+  },
   created() {
     // 在页面加载时读取sessionStorage里的状态信息   Read the state information in sessionStorage when the page loads
     if (sessionStorage.getItem('store')) {
@@ -117,11 +133,11 @@ export default {
   text-decoration: none;
   color: rgb(48, 54, 75);
   font-weight: bold;
-  box-shadow: rgba(0, 0, 0, .2) 2px 8px 8px -5px;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 8px 8px -5px;
   transform: translate3d(0, 2px, 0);
 }
 .router-link:hover {
-  box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px -5px;
   transform: translate3d(0, 2px, 0);
 }
 #main {

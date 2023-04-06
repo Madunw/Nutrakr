@@ -6,17 +6,9 @@
   <el-card class="box-card">
     <span class="items">
       <ul>
-        Calories
+        <li v-for="item in ['Calories', 'Carbohydrate', 'Protein', 'Fat']">{{ item }}</li>
       </ul>
-      <ul>
-        Carbohydrate
-      </ul>
-      <ul>
-        Protein
-      </ul>
-      <ul>
-        Fat
-      </ul></span
+      </span
     >
     <span class="results">
       <ul>

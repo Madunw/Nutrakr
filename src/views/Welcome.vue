@@ -6,23 +6,11 @@
       <transition name="fade">
         <div class="box welcome" v-show="showWelcome">
           <div class="main-headline">
-            <h1 style="font-size: 50px">
-              Tracking Your Intake <br />Calculate Recipe Nutrition
-            </h1>
+            <h1>Tracking Your Intake <br />Calculate Recipe Nutrition</h1>
           </div>
-          <div class="sub-headline">
-            <h4>Check calories, portions, and macros</h4>
+          <div class="sub-headline" v-for="item in subHeadlines" :key="item.id">
+            <h4>{{ item.text }}</h4>
           </div>
-          <div class="sub-headline">
-            <h4>Simplify your nutrition journey</h4>
-          </div>
-          <div class="sub-headline">
-            <h4>Estimate the number of daily calories your body needs</h4>
-          </div>
-          <div class="sub-headline">
-            <h4>Reach your goal to earn crypto rewards</h4>
-          </div>
-
           <div class="button-area">
             <span class="welcome-button"
               ><div>
@@ -34,7 +22,11 @@
                 Connect metamask wallet wo track your weight
               </div></span
             ><span class="welcome-button"
-              ><el-button type="primary" round plain @click="continueWithoutWallet"
+              ><el-button
+                type="primary"
+                round
+                plain
+                @click="continueWithoutWallet"
                 >Continue</el-button
               ></span
             >
@@ -67,8 +59,6 @@
               >Record</el-button
             >
           </div>
-          
-          
 
           <Result></Result>
 
@@ -81,7 +71,8 @@
             <el-button round @click="reForm">Re-fill</el-button>
           </span>
           <transition name="fade">
-          <div  v-if="isConnected"><Challenge></Challenge></div></transition>
+            <div v-if="isConnected"><Challenge></Challenge></div
+          ></transition>
         </div>
       </transition>
     </div>
@@ -93,16 +84,33 @@ import Form from '@/components/form.vue';
 import Result from '@/components/result.vue';
 import Challenge from '@/components/challenge.vue';
 import { ethers } from 'ethers';
-import { userInfoAddressABI, userInfoAddressAddress } from '../../smart_contracts/contract';
+import {
+  userInfoAddressABI,
+  userInfoAddressAddress,
+} from '../../smart_contracts/contract';
 import { mapState } from 'vuex';
 export default {
   name: 'Welcome',
   data() {
     return {
-      // showWelcome: true,
-      // showForm: false,
-      // showResult: false,
-      // isConnected: false,
+      subHeadlines: [
+        {
+          text: 'Simplify your nutrition journey',
+          id: 1,
+        },
+        {
+          text: 'Calculate your nutrition needs',
+          id: 2,
+        },
+        {
+          text: 'Calculate recipe nutrition',
+          id: 3,
+        },
+        {
+          text: 'Reach your goal to earn crypto rewards',
+          id: 4,
+        },
+      ],
     };
   },
   components: {
@@ -143,24 +151,24 @@ export default {
       const { ethereum } = window;
       if (!ethereum) {
         this.$notify.info({
-          message: 'Please install metamask'
+          message: 'Please install metamask',
         });
         return;
       }
       const [address] = await this.Provider().send('eth_requestAccounts', []);
       this.$store.state.userAddress = address; // set user address
       this.$notify({
-          message: 'metamask connected',
-          type: 'success'
-        });
+        message: 'metamask connected',
+        type: 'success',
+      });
       this.$store.state.welcome.isConnected = true;
     },
-    connect(){
+    connect() {
       this.connectWallet();
       this.$store.state.welcome.showWelcome = false; // hide welcome box
       this.$store.state.welcome.showForm = true; // show form box
     },
-    reconnect(){
+    reconnect() {
       this.connectWallet();
     },
     // continue without wallet
@@ -186,13 +194,12 @@ export default {
     async record(weight, caloriesNeeded) {
       if (this.$store.state.userAddress == '') {
         this.$notify.info({
-          message: 'Please connect wallet first'
+          message: 'Please connect wallet first',
         });
         return;
       }
       await this.getUserInfoContract().setUserInfo(weight, caloriesNeeded);
     },
-    
   },
 };
 </script>
@@ -233,6 +240,7 @@ export default {
   position: absolute;
 }
 .main-headline {
+  font-size: 1.7rem;
   margin: 30px auto;
   text-align: justify;
   color: rgb(48, 49, 65);
@@ -320,6 +328,19 @@ export default {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-headline h1 {
+    font-size: 1.5rem;
+  }
+  .sub-headline h4 {
+    font-size: 14px;
+  }
+  .welcome-button {
+    display: block;
+    margin-bottom: 10px;
   }
 }
 </style>
