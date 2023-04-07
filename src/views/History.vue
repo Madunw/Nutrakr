@@ -24,8 +24,7 @@
   </div>
 </template>
 <script>
-import { ethers } from 'ethers';
-import { userInfoAddress, userInfoABI } from '../../smart_contracts/contract';
+import { getUserInfoUpdatedEvents } from '../context/UserInfoContext.js';
 export default {
   data() {
     return {
@@ -33,9 +32,11 @@ export default {
     };
   },
   mounted() {
-    //进入路由时自动获取链上记录
-    // Automatically get records on the blockchain when entering the route
-    this.getUserInfoUpdatedEvents();
+    //进入路由时自动获取链上记录并存入本地
+    // Automatically get records on the blockchain when entering the route,and store the event as list[]
+    getUserInfoUpdatedEvents().then(events => {
+      this.list = events;
+    });
   },
   methods: {
     // Convert a UNIX timestamp to a readable date and time string
@@ -51,32 +52,6 @@ export default {
         .toString()
         .padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     },
-
-    // Get the contract instance
-    getContract() {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const ContractCounter = new ethers.Contract(
-        userInfoAddress,
-        userInfoABI,
-        signer
-      );
-      return ContractCounter;
-    },
-
-    // Get UserInfoUpdated events and update the list for table data
-    async getUserInfoUpdatedEvents() {
-      const filter = this.getContract().filters.UserInfoUpdated();
-      const events = await this.getContract().queryFilter(filter);
-      console.log(events)
-      this.list = events;
-    },
-    
-    // cpomute the time difference between the current time and the timestamp
-    timeCompute(timestamp){
-      let timestampCurrent = Date.parse(new Date()) / 1000;//get current time
-      return timestampCurrent - timestamp;
-    }
   },
 };
 </script>

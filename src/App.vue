@@ -34,11 +34,7 @@
 </template>
 
 <script>
-import { ethers } from 'ethers';
-import {
-  userinformationAddress,
-  userinformationABI,
-} from '../smart_contracts/contract';
+import { getUserInfoUpdatedEvents } from './context/UserInfoContext.js';
 
 export default {
   name: 'App',
@@ -63,6 +59,13 @@ export default {
       ],
     };
   },
+  mounted() {
+    //自动获取链上记录
+    // Automatically get recorded events on the blockchain ,and get the last counted calorieNeed value 
+    getUserInfoUpdatedEvents().then(events => {
+      this.$store.state.form.caloriesNeeded = events[events.length-1].args.calorieNeed;
+    });
+  },
   created() {
     // 在页面加载时读取sessionStorage里的状态信息   Read the state information in sessionStorage when the page loads
     if (sessionStorage.getItem('store')) {
@@ -74,7 +77,6 @@ export default {
         )
       );
     }
-
     // 在页面刷新时将vuex里的信息保存到sessionStorage里     Save the information in vuex to sessionStorage when the page is refreshed
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state));

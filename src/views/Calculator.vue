@@ -58,8 +58,6 @@
 <script>
 import Search from '@/components/search.vue';
 import Table from '@/components//table.vue';
-import { ethers } from 'ethers';
-import { userinformationAddress, userinformationABI } from '../../smart_contracts/contract';
 import ChartMacronutrients from '@/components/chart-macronutrients.vue';
 import { mapState, mapGetters } from 'vuex';
 export default {
@@ -94,34 +92,11 @@ export default {
     Table,
     ChartMacronutrients,
   },
-  mounted() {
-    //进入页面时自动获取链上记录
-    // On mount, fetch user info from chain
-    this.getUserInfoUpdatedEvents();
-  },
   methods: {
     //传入两个整数，让其相除，不保留小数
     // Divide two integers and return the result as a string with no decimal places
     divisionToFixed(num1, num2) {
       return (num1 / num2).toFixed(0);
-    },
-    // Get the contract instance
-    getContract() {
-      const provider = new ethers.providers.Web3Provider(window.ethereum); 
-      const signer = provider.getSigner();
-      const ContractCounter = new ethers.Contract( 
-        userinformationAddress,
-        userinformationABI,
-        signer
-      );
-      return ContractCounter;
-    },
-    // Get Events for contract
-    async getUserInfoUpdatedEvents() {
-      const filter = this.getContract().filters.UserInfoUpdated();
-      const events = await this.getContract().queryFilter(filter);
-      // load the last caloriesNeed form the contract
-      this.caloriesNeed = events.slice(-1)[0].args[2];
     },
   },
 };
@@ -199,7 +174,7 @@ export default {
 }
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1250px) {
   #calculate-page {
     /* flex-direction: row; */
     display: block;
