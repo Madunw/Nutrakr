@@ -4,7 +4,7 @@
     <div class="main-area">
       <!-- welcome headlines and slogans -->
       <transition name="fade">
-        <div class="box welcome" v-show="showWelcome">
+        <div class="box" v-show="showWelcome">
           <div class="main-headline">
             <h1>Tracking Your Intake <br />Calculate Recipe Nutrition</h1>
           </div>
@@ -13,12 +13,12 @@
           </div>
           <div class="button-area">
             <span class="welcome-button"
-              ><div>
+              >
                 <el-button type="primary" round @click="connect"
                   >Connect Wallet</el-button
                 >
-              </div>
-              <div class="hint">
+              
+              <div class="button-hint" style="max-width:100%">
                 Connect metamask wallet wo track your weight
               </div></span
             ><span class="welcome-button"
@@ -28,7 +28,7 @@
                 plain
                 @click="continueWithoutWallet"
                 >Continue</el-button
-              ></span
+              ></span 
             >
           </div>
         </div>
@@ -80,9 +80,9 @@
 </template>
 
 <script>
-import Form from '@/components/form.vue';
-import Result from '@/components/result.vue';
-import Challenge from '@/components/challenge.vue';
+import Form from '@/components/Form.vue';
+import Result from '@/components/Result.vue';
+import Challenge from '@/components/Challenge.vue';
 import { ethers } from 'ethers';
 import {
   userInfoAddressABI,
@@ -204,7 +204,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 .welcomepage {
   height: 100%;
   width: 100%;
@@ -221,47 +222,58 @@ export default {
   /* background-color: aquamarine; */
 }
 .left-area img {
-  margin-top: 50px;
+  margin-top: 3rem;
   width: 60%;
   height: 100%;
 }
 .main-area {
-  margin-left: 9%;
+  margin-left: 6%;
   float: left;
-  width: max-content;
-  height: max-content;
+  width: 40%;
+  height: 90%;
   justify-content: center;
   align-items: center;
+  max-width: 60vw;
 }
-
+h1 {
+  font-size: 2.4rem;
+}
 .box {
+  width: 40%;
+  height: 70%;
   top: 20%;
   margin-top: 3%;
   position: absolute;
 }
 .main-headline {
   font-size: 1.7rem;
-  margin: 30px auto;
+  margin: 2rem auto;
   text-align: justify;
   color: rgb(48, 49, 65);
 }
 .sub-headline {
-  margin: 10px;
+  margin: 0.2rem;
   text-align: justify;
   color: rgb(91, 103, 117);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .button-area {
-  margin: 60px auto;
-}
-.hint {
-  color: rgb(143, 143, 143);
-  font-size: 3px;
+  margin: 3rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 .welcome-button {
-  width: 49%;
-  float: left;
+  flex: 1;
 }
+button {
+  height: 2.2rem;
+}
+.button-hint {
+  color: rgb(143, 143, 143);
+  font-size: 0.8rem;
+}
+
 .form {
   left: 12%;
 }
@@ -270,7 +282,7 @@ export default {
   text-align: left;
 }
 .result button {
-  margin: 30px;
+  margin: 3rem;
 }
 .fade-leave-active {
   -webkit-animation: fade-out 0.5s linear;

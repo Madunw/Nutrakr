@@ -109,15 +109,14 @@ export default {
 }
 .table {
   display: block;
-  width: calc(99% - 410px);
+  width: calc(99% - 400px);
   margin-top: 120px;
 }
 .side {
   display: block;
-  /* width最小为400px */
-  width: 410px;
+  width: 400px;
   height: 100%;
-  margin: 30px auto;
+  margin: 2rem auto;
   
 }
 .chartMacronutrients {
@@ -126,8 +125,6 @@ export default {
   text-align: center;
 }
 .chartMacronutrient {
-  /* width: 450px;
-  height: 400px; */
   margin: auto;
 }
 .progress-bars {
@@ -135,9 +132,8 @@ export default {
 }
 .progress-bar {
   width: 20rem;
-  margin: 15px auto;
+  margin: 1rem auto;
 }
-
 @-webkit-keyframes slide-in-top {
   0% {
     -webkit-transform: translateY(-1000px);
@@ -191,5 +187,6 @@ export default {
   .side {
     height: 100%;
   }
+
 }
 </style>

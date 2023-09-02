@@ -55,7 +55,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .history-page {
   margin-top: 5%;
   -webkit-animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

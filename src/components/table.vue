@@ -165,10 +165,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 img {
-  width: 15px;
-  height: 15px;
+  width: 1rem;
+  height: 1rem;
 }
 #micronutrients {
   position: relative;
@@ -178,6 +178,11 @@ img {
   flex-wrap: wrap;
 }
 #micronutrients td {
-  width: 185px;
+  width: 12rem;
 }
+@media (orientation: portrait){
+    *{
+      font-size: 80rem;
+    }
+  }
 </style>

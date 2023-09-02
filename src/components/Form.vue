@@ -248,11 +248,12 @@ export default {
 };
 </script>
 <style scoped>
+  
 .form-item {
-  width: 250px;
-  padding-left: 30px;
+  width: 16rem;
+  padding-left: 2rem;
 }
 .el-form-item__content button {
-  margin-right: 50px;
+  margin-right: 3.5rem;
 }
 </style>

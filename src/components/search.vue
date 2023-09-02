@@ -63,8 +63,8 @@ export default {
 </script>
 <style scoped>
 .svg {
-  width: 15px;
-  height: 15px;
+  width: 1rem;
+  height: 1rem;
 }
 .addButton {
   float: right;
